@@ -6,7 +6,11 @@
     "title": "sycamore-hq work",
     "url": "https://github.com/orgs/sycamore-hq/projects/2",
     "seed": "just project-seed",
-    "roadmap": "just project-roadmap"
+    "roadmap": "just project-roadmap",
+    "views": {
+      "roadmap": "https://github.com/orgs/sycamore-hq/projects/2/views/2",
+      "next": "https://github.com/orgs/sycamore-hq/projects/2/views/3"
+    }
   },
   "roster": [
     "berea",
