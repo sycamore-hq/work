@@ -1,6 +1,12 @@
 {
   "updated": "2026-09-03",
   "source_as_of": "origin/main after fetch, 2026-09-03 17:45 UTC",
+  "github_project": {
+    "owner": "sycamore-hq",
+    "title": "sycamore-hq work",
+    "url": null,
+    "seed": "just project-seed"
+  },
   "roster": [
     "berea",
     "crossr-harness",
@@ -12,6 +18,7 @@
   "items": [
     {
       "id": "pr5c",
+      "issue": 2,
       "title": "PR 5 absorb: one rust law, thin gate cards, retarget graphs + harness §6",
       "status": "todo",
       "kind": "planned",
@@ -22,6 +29,7 @@
     },
     {
       "id": "landing-pages",
+      "issue": 3,
       "title": "Turn landing Pages on, or stop pointing at the 404",
       "status": "todo",
       "kind": "outstanding",
@@ -32,6 +40,7 @@
     },
     {
       "id": "berea-003",
+      "issue": 4,
       "title": "berea 003-harness-and-hygiene (CI + hygiene)",
       "status": "blocked",
       "kind": "outstanding",
@@ -42,6 +51,7 @@
     },
     {
       "id": "pr5-record",
+      "issue": 5,
       "title": "Record 5a/5b on the skills tracker and plan header",
       "status": "todo",
       "kind": "hygiene",
@@ -52,6 +62,7 @@
     },
     {
       "id": "gan-close-4b",
+      "issue": 6,
       "title": "Close gan-layer-separation PRs 0–4b on the three remotes",
       "status": "todo",
       "kind": "hygiene",
@@ -62,6 +73,7 @@
     },
     {
       "id": "landing-rtl",
+      "issue": 7,
       "title": "Drop rust-team-lead from the landing template",
       "status": "todo",
       "kind": "hygiene",
@@ -72,6 +84,7 @@
     },
     {
       "id": "landing-pins",
+      "issue": 8,
       "title": "Landing README still lists v0 pins",
       "status": "todo",
       "kind": "hygiene",
@@ -82,6 +95,7 @@
     },
     {
       "id": "loops-lockfile",
+      "issue": 9,
       "title": "loops lockfile says loops=v0 while the repo tagged v1-cards",
       "status": "todo",
       "kind": "hygiene",
@@ -92,6 +106,7 @@
     },
     {
       "id": "dashboard-phase",
+      "issue": 10,
       "title": "status-dashboard totals ignore phase-level in_progress",
       "status": "todo",
       "kind": "hygiene",
@@ -102,6 +117,7 @@
     },
     {
       "id": "pr6",
+      "issue": 11,
       "title": "PR 6: plan-writer + plan-first GAN",
       "status": "todo",
       "kind": "planned",
@@ -112,6 +128,7 @@
     },
     {
       "id": "pr7",
+      "issue": 12,
       "title": "PR 7: handoff packets, envelopes, AVRIL batching",
       "status": "todo",
       "kind": "planned",
@@ -122,6 +139,7 @@
     },
     {
       "id": "berea-002",
+      "issue": 13,
       "title": "berea 002-memory-notes",
       "status": "todo",
       "kind": "planned",
@@ -132,6 +150,7 @@
     },
     {
       "id": "graph-runner",
+      "issue": 14,
       "title": "Graph runner (loops backlog)",
       "status": "parked",
       "kind": "parked",
@@ -142,6 +161,7 @@
     },
     {
       "id": "work-00",
+      "issue": 15,
       "title": "Stand up this org ledger",
       "status": "in_progress",
       "kind": "outstanding",
@@ -152,13 +172,14 @@
     },
     {
       "id": "gh-project",
+      "issue": 16,
       "title": "Create the org GitHub Project (bot cannot)",
       "status": "todo",
       "kind": "hygiene",
       "repos": ["work"],
       "source": "gh project create --owner sycamore-hq → cursor[bot] lacks createProjectV2",
       "blocked_by": [],
-      "notes": "Human creates Project 'sycamore-hq work', then seed draft items from work.json. Do not invent a second backlog."
+      "notes": "Issues #2–#16 are the cards. A human with org project write runs `just project-seed`. Do not invent a second backlog."
     }
   ]
 }

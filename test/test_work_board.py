@@ -54,6 +54,17 @@ class LedgerShape(unittest.TestCase):
             for dep in item.get("blocked_by") or []:
                 self.assertIn(dep, ids, f"{item['id']} waits on unknown {dep}")
 
+    def test_every_item_has_a_unique_issue(self):
+        issues = [i["issue"] for i in LEDGER["items"]]
+        self.assertTrue(all(isinstance(n, int) and n >= 2 for n in issues))
+        self.assertEqual(len(issues), len(set(issues)))
+
+    def test_project_seed_target(self):
+        project = LEDGER["github_project"]
+        self.assertEqual(project["owner"], "sycamore-hq")
+        self.assertEqual(project["title"], "sycamore-hq work")
+        self.assertIsNone(project["url"])
+
 
 class Classification(unittest.TestCase):
     def test_counts_match_literal_status_strings(self):
@@ -94,6 +105,7 @@ class Render(unittest.TestCase):
         text = work_board.render_markdown(MODEL)
         self.assertIn("berea", text)
         self.assertIn("`pr5c`", text)
+        self.assertIn("#2", text)
         self.assertNotIn("{{", text)
 
     def test_html_has_no_template_holes(self):
