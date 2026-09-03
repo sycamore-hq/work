@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+# Create (or reuse) the org GitHub Project and attach every work issue.
+# work.json is the record. This script is a view.
+#
+# Needs a token with organization project write. cursor[bot] does not have it.
+# Run as an org owner / admin:
+#
+#   just project-seed
+#
+# Optional: GH_PROJECT_OWNER, GH_PROJECT_TITLE
+
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+LEDGER="$ROOT/work.json"
+OWNER="${GH_PROJECT_OWNER:-sycamore-hq}"
+TITLE="${GH_PROJECT_TITLE:-sycamore-hq work}"
+
+if ! command -v jq >/dev/null; then
+  echo "jq is required" >&2
+  exit 1
+fi
+
+if [[ ! -f "$LEDGER" ]]; then
+  echo "missing $LEDGER" >&2
+  exit 1
+fi
+
+list_json="$(gh project list --owner "$OWNER" --format json --limit 100)"
+number="$(jq -r --arg t "$TITLE" '.projects[] | select(.title == $t) | .number' <<<"$list_json" | head -1)"
+
+if [[ -z "$number" || "$number" == "null" ]]; then
+  created="$(gh project create --owner "$OWNER" --title "$TITLE" --format json)"
+  number="$(jq -r '.number' <<<"$created")"
+  echo "created project #$number" >&2
+else
+  echo "reusing project #$number" >&2
+fi
+
+if [[ -z "$number" || "$number" == "null" ]]; then
+  echo "could not create or find project '$TITLE' on $OWNER" >&2
+  exit 1
+fi
+
+view="$(gh project view "$number" --owner "$OWNER" --format json)"
+url="$(jq -r '.url' <<<"$view")"
+echo "$url"
+
+roster="$(jq -r '.roster[]' "$LEDGER")"
+while IFS= read -r repo; do
+  [[ -z "$repo" ]] && continue
+  gh project link "$number" --owner "$OWNER" --repo "$OWNER/$repo" >/dev/null \
+    && echo "linked $OWNER/$repo" >&2 \
+    || echo "link skipped: $OWNER/$repo" >&2
+done <<<"$roster"
+
+jq -r '.items[] | select(.issue != null) | .issue' "$LEDGER" | while IFS= read -r issue; do
+  gh project item-add "$number" --owner "$OWNER" \
+    --url "https://github.com/$OWNER/work/issues/$issue" \
+    --format json >/dev/null
+  echo "added $OWNER/work#$issue" >&2
+done
+
+echo "project: $url"
+echo "next: set Status on the board. Labels already carry kind / repo / state."

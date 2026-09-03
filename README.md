@@ -26,6 +26,7 @@ their trackers currently hide.
 ```bash
 just status        # markdown
 just status-html   # docs/board.html
+just project-seed  # create/reuse the org GitHub Project (needs org project write)
 just test
 just check
 ```
@@ -39,5 +40,9 @@ just check
 3. `just status-html` is regenerated in the same commit.
 
 Do not invent a second backlog. A GitHub Project is a view of `work.json`.
-`cursor[bot]` cannot create one on this org (`createProjectV2` denied).
-That is item `gh-project` — a human cuts the Project, then we seed it.
+Issues [#2](https://github.com/sycamore-hq/work/issues/2)–[#16](https://github.com/sycamore-hq/work/issues/16) are the cards.
+
+`cursor[bot]` cannot create the Project (`createProjectV2` denied). An org
+owner runs `just project-seed` (or the same commands in
+[`scripts/gh-project-seed`](scripts/gh-project-seed)). That is item
+`gh-project`.
