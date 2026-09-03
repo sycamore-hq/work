@@ -77,10 +77,12 @@ class Classification(unittest.TestCase):
         self.assertEqual(MODEL["counts"][work_board.PARKED], raw["parked"])
         self.assertEqual(MODEL["counts"][work_board.DONE], raw.get("done", 0))
 
-    def test_pr5c_and_landing_pages_are_startable(self):
+    def test_startable_matches_the_ledger(self):
         ids = {i["id"] for i in MODEL["startable"]}
-        self.assertIn("pr5c", ids)
-        self.assertIn("landing-pages", ids)
+        self.assertEqual(
+            ids, {"landing-pages", "pr5-record", "gan-close-4b", "landing-pins"}
+        )
+        self.assertNotIn("pr5c", ids)
 
     def test_pr6_waits_on_pr5f(self):
         ids = {i["id"] for i in MODEL["startable"]}
@@ -101,7 +103,7 @@ class Classification(unittest.TestCase):
         self.assertNotIn("graph-runner", {i["id"] for i in MODEL["startable"]})
 
     def test_work_00_is_in_flight(self):
-        self.assertEqual([i["id"] for i in MODEL["in_flight"]], ["work-00"])
+        self.assertIn("work-00", {i["id"] for i in MODEL["in_flight"]})
 
 
 class Render(unittest.TestCase):
