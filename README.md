@@ -26,7 +26,8 @@ their trackers currently hide.
 ```bash
 just status        # markdown
 just status-html   # docs/board.html
-just project-seed  # create/reuse the org GitHub Project (needs org project write)
+just project-seed     # create/reuse the org GitHub Project (needs org project write)
+just project-roadmap  # Status, dates, blocked_by, Roadmap + Next views
 just test
 just check
 ```
@@ -43,4 +44,7 @@ Do not invent a second backlog. A GitHub Project is a view of `work.json`.
 Issues [#2](https://github.com/sycamore-hq/work/issues/2)–[#19](https://github.com/sycamore-hq/work/issues/19) are the cards. Project: [sycamore-hq work](https://github.com/orgs/sycamore-hq/projects/2).
 
 `just project-seed` creates or reuses that board (see
-[`scripts/gh-project-seed`](scripts/gh-project-seed)). `gh-project` is done.
+[`scripts/gh-project-seed`](scripts/gh-project-seed)). `just project-roadmap`
+sets Status, Lane, sequence dates, and issue dependencies so the Project
+Roadmap and Next views show what is outstanding and what waits on what.
+`gh-project` is done.
