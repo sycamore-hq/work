@@ -17,13 +17,18 @@ Roster read 2026-09-03 from origin after fetch:
 Issues #2–#19 are the Project cards. Project
 https://github.com/orgs/sycamore-hq/projects/2.
 
-In progress (started 2026-09-03): `loops-lockfile` #9,
+In progress (started 2026-09-03): `pr5c` #2, `loops-lockfile` #9,
 `dashboard-phase` #10, `berea-002` #13, plus `work-00` #15.
 
-`pr5c` #2 done 2026-09-03: crossr-skills#120 rebase-merged as
-`4b8601e`..`507c509`. Acceptance greps zero and `harness-validate` green on
-`507c509`; tag `v1-one-law` goes there (human push, pending at this commit). `pr5d` #17, `pr5e` #18, `landing-rtl`
-#7 are now startable.
+`pr5c` #2 code half landed 2026-09-03: crossr-skills#120 rebase-merged as
+`4b8601e`..`507c509`; acceptance greps zero and `harness-validate` green on
+`507c509`. It stays in progress until tag `v1-one-law` peels to `507c509` on
+the skills remote (human push). `pr5d` #17 and `pr5e` #18 precondition on
+that tag; `landing-rtl` #7 waits with them.
+
+Tests assert ledger invariants (startable ⇔ todo, unparked, blockers done;
+lanes partition the ledger; blocker graph acyclic; renderers name every
+open item), not named ids. A status flip edits the record, not the suite.
 
 Roadmap view is a view of this ledger (`just project-roadmap`): Status, Lane,
 sequence dates, and GitHub issue `blocked_by` edges. Dates are topology, not
