@@ -4,7 +4,7 @@
   "github_project": {
     "owner": "sycamore-hq",
     "title": "sycamore-hq work",
-    "url": null,
+    "url": "https://github.com/orgs/sycamore-hq/projects/2",
     "seed": "just project-seed"
   },
   "roster": [
@@ -168,18 +168,18 @@
       "repos": ["work"],
       "source": "this repository",
       "blocked_by": [],
-      "notes": "work.json is the record. The HTML is a view. GitHub Project is owed (gh-project)."
+      "notes": "work.json is the record. The HTML is a view. GitHub Project: https://github.com/orgs/sycamore-hq/projects/2"
     },
     {
       "id": "gh-project",
       "issue": 16,
       "title": "Create the org GitHub Project (bot cannot)",
-      "status": "todo",
+      "status": "done",
       "kind": "hygiene",
       "repos": ["work"],
-      "source": "gh project create --owner sycamore-hq → cursor[bot] lacks createProjectV2",
+      "source": "https://github.com/orgs/sycamore-hq/projects/2",
       "blocked_by": [],
-      "notes": "Issues #2–#16 are the cards. A human with org project write runs `just project-seed`. Do not invent a second backlog."
+      "notes": "Project 'sycamore-hq work' is live. Issues #2–#16 are the cards. Roster remotes linked. Do not invent a second backlog."
     }
   ]
 }

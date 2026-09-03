@@ -14,9 +14,9 @@ Roster read 2026-09-03 from origin after fetch:
 - crossr-web-landing
 - work (this remote)
 
-Issues #2–#16 are the Project cards. `gh project create` still fails:
-`cursor[bot]` lacks `createProjectV2` on the org. An org owner runs
-`just project-seed`. Recorded as `gh-project`.
+Issues #2–#16 are the Project cards. Project
+https://github.com/orgs/sycamore-hq/projects/2 is live (15 items).
+`gh-project` is done.
 
 ## Verification Status
 
