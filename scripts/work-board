@@ -115,22 +115,26 @@ def render_markdown(m: dict) -> str:
         lines.append("_none_")
     for item in m["startable"]:
         repos = ", ".join(item.get("repos") or [])
-        lines.append(f"- `{item['id']}` {item['title']} · {repos}")
+        issue = f" #{item['issue']}" if item.get("issue") else ""
+        lines.append(f"- `{item['id']}`{issue} {item['title']} · {repos}")
     if m["in_flight"]:
         lines += ["", "### In progress", ""]
         for item in m["in_flight"]:
-            lines.append(f"- `{item['id']}` {item['title']}")
+            issue = f" #{item['issue']}" if item.get("issue") else ""
+            lines.append(f"- `{item['id']}`{issue} {item['title']}")
     if m["held"]:
         lines += ["", "### Held", ""]
         for item in m["held"]:
+            issue = f" #{item['issue']}" if item.get("issue") else ""
             lines.append(
-                f"- `{item['id']}` {item['status']}: {item['title']}"
+                f"- `{item['id']}`{issue} {item['status']}: {item['title']}"
             )
     if m["planned"]:
         lines += ["", "### Waiting on something", ""]
         for item in m["planned"]:
             wait = ", ".join(item.get("blocked_by") or []) or "not startable"
-            lines.append(f"- `{item['id']}` {item['title']} · waiting on {wait}")
+            issue = f" #{item['issue']}" if item.get("issue") else ""
+            lines.append(f"- `{item['id']}`{issue} {item['title']} · waiting on {wait}")
     return "\n".join(lines) + "\n"
 
 
@@ -141,6 +145,13 @@ def render_html(m: dict) -> str:
         bits = []
         for item in items:
             repos = " · ".join(item.get("repos") or [])
+            issue = item.get("issue")
+            issue_html = (
+                f'<a class="text-xs font-mono text-stone-500 shrink-0" '
+                f'href="https://github.com/sycamore-hq/work/issues/{int(issue)}">'
+                f'#{int(issue)}</a>'
+                if issue else ""
+            )
             notes = html.escape(item.get("notes") or "")
             wait = item.get("blocked_by") or []
             wait_html = (
@@ -155,7 +166,7 @@ def render_html(m: dict) -> str:
                 f'<span class="font-mono text-xs text-stone-500">{html.escape(item["id"])}</span> '
                 f'{html.escape(item["title"])}</h3>'
                 f'<span class="text-xs font-mono text-stone-500 shrink-0">'
-                f'{html.escape(item.get("status", ""))}</span></div>'
+                f'{html.escape(item.get("status", ""))}</span>{issue_html}</div>'
                 f'<div class="text-xs text-stone-500 mt-1">{html.escape(repos)}</div>'
                 f'{wait_html}'
                 f'<p class="text-sm text-stone-600 mt-2">{notes}</p>'
