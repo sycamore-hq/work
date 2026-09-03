@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Prove the ledger classifies the way the record says."""
+"""Prove the ledger classifies the way the record says.
+
+Every check here is an invariant over whatever work.json says today. No test
+names a ledger item, so a status flip edits the record, not this file.
+"""
 
 import importlib.machinery
 import importlib.util
@@ -31,6 +35,23 @@ _roadmap_spec.loader.exec_module(roadmap)
 
 LEDGER = work_board.load_ledger(ROOT / "work.json")
 MODEL = work_board.model(LEDGER, "test")
+ITEMS = LEDGER["items"]
+BY_ID = {i["id"]: i for i in ITEMS}
+STATUSES = {
+    work_board.DONE,
+    work_board.ACTIVE,
+    work_board.TODO,
+    work_board.BLOCKED,
+    work_board.PARKED,
+}
+
+
+def ids(items: list[dict]) -> set[str]:
+    return {i["id"] for i in items}
+
+
+def blockers(item: dict) -> list[str]:
+    return item.get("blocked_by") or []
 
 
 class LedgerShape(unittest.TestCase):
@@ -48,24 +69,40 @@ class LedgerShape(unittest.TestCase):
         )
 
     def test_ids_unique(self):
-        ids = [i["id"] for i in LEDGER["items"]]
-        self.assertEqual(len(ids), len(set(ids)))
+        listed = [i["id"] for i in ITEMS]
+        self.assertEqual(len(listed), len(set(listed)))
 
     def test_every_item_names_a_roster_repo(self):
         roster = set(LEDGER["roster"])
-        for item in LEDGER["items"]:
+        for item in ITEMS:
             self.assertTrue(item["repos"], item["id"])
             for repo in item["repos"]:
                 self.assertIn(repo, roster, item["id"])
 
+    def test_every_status_is_a_known_word(self):
+        for item in ITEMS:
+            self.assertIn(item["status"], STATUSES, item["id"])
+
     def test_blockers_exist(self):
-        ids = {i["id"] for i in LEDGER["items"]}
-        for item in LEDGER["items"]:
-            for dep in item.get("blocked_by") or []:
-                self.assertIn(dep, ids, f"{item['id']} waits on unknown {dep}")
+        for item in ITEMS:
+            for dep in blockers(item):
+                self.assertIn(dep, BY_ID, f"{item['id']} waits on unknown {dep}")
+
+    def test_no_item_blocks_itself(self):
+        for item in ITEMS:
+            self.assertNotIn(item["id"], blockers(item))
+
+    def test_blocker_graph_is_acyclic(self):
+        def walk(ident: str, path: tuple[str, ...]) -> None:
+            self.assertNotIn(ident, path, f"cycle: {' -> '.join(path + (ident,))}")
+            for dep in blockers(BY_ID[ident]):
+                walk(dep, path + (ident,))
+
+        for item in ITEMS:
+            walk(item["id"], ())
 
     def test_every_item_has_a_unique_issue(self):
-        issues = [i["issue"] for i in LEDGER["items"]]
+        issues = [i["issue"] for i in ITEMS]
         self.assertTrue(all(isinstance(n, int) and n >= 2 for n in issues))
         self.assertEqual(len(issues), len(set(issues)))
 
@@ -79,44 +116,76 @@ class LedgerShape(unittest.TestCase):
 
 
 class Classification(unittest.TestCase):
+    """Startable ⇔ todo, not parked, every blocker done. Lanes partition."""
+
     def test_counts_match_literal_status_strings(self):
-        raw = Counter(i["status"] for i in LEDGER["items"])
-        self.assertEqual(MODEL["counts"][work_board.TODO], raw["todo"])
-        self.assertEqual(MODEL["counts"][work_board.ACTIVE], raw["in_progress"])
-        self.assertEqual(MODEL["counts"][work_board.BLOCKED], raw["blocked"])
-        self.assertEqual(MODEL["counts"][work_board.PARKED], raw["parked"])
-        self.assertEqual(MODEL["counts"][work_board.DONE], raw.get("done", 0))
+        raw = Counter(i["status"] for i in ITEMS)
+        for status in STATUSES:
+            self.assertEqual(MODEL["counts"][status], raw.get(status, 0), status)
 
-    def test_pr5c_done_unblocks_5d_5e_5g(self):
-        pr5c = next(i for i in LEDGER["items"] if i["id"] == "pr5c")
-        self.assertEqual(pr5c["status"], "done")
-        ids = {i["id"] for i in MODEL["startable"]}
-        self.assertNotIn("pr5c", ids)
-        for unblocked in ("pr5d", "pr5e", "landing-rtl", "landing-pages"):
-            self.assertIn(unblocked, ids)
+    def test_startable_items_are_todo_unparked_and_unblocked(self):
+        done = ids([i for i in ITEMS if i["status"] == work_board.DONE])
+        for item in MODEL["startable"]:
+            self.assertEqual(item["status"], work_board.TODO, item["id"])
+            self.assertNotEqual(item.get("kind"), work_board.PARKED, item["id"])
+            self.assertTrue(set(blockers(item)) <= done, item["id"])
 
-    def test_pr6_waits_on_pr5f(self):
-        ids = {i["id"] for i in MODEL["startable"]}
-        self.assertNotIn("pr6", ids)
-        self.assertIn("pr6", {i["id"] for i in MODEL["planned"]})
-        pr6 = next(i for i in LEDGER["items"] if i["id"] == "pr6")
-        self.assertEqual(pr6["blocked_by"], ["pr5f"])
+    def test_every_unblocked_todo_is_startable(self):
+        done = ids([i for i in ITEMS if i["status"] == work_board.DONE])
+        expected = {
+            i["id"]
+            for i in ITEMS
+            if i["status"] == work_board.TODO
+            and i.get("kind") != work_board.PARKED
+            and set(blockers(i)) <= done
+        }
+        self.assertEqual(ids(MODEL["startable"]), expected)
 
-    def test_pr7_waits_on_pr6(self):
-        self.assertNotIn("pr7", {i["id"] for i in MODEL["startable"]})
+    def test_waiting_items_have_an_unmet_blocker_or_are_parked(self):
+        done = ids([i for i in ITEMS if i["status"] == work_board.DONE])
+        for item in MODEL["planned"]:
+            self.assertEqual(item["status"], work_board.TODO, item["id"])
+            unmet = set(blockers(item)) - done
+            self.assertTrue(
+                unmet or item.get("kind") == work_board.PARKED,
+                f"{item['id']} is waiting on nothing",
+            )
 
-    def test_held_includes_berea_003_and_graph_runner(self):
-        ids = {i["id"] for i in MODEL["held"]}
-        self.assertIn("berea-003", ids)
-        self.assertIn("graph-runner", ids)
+    def test_startable_and_waiting_partition_todo(self):
+        todo = ids([i for i in ITEMS if i["status"] == work_board.TODO])
+        startable = ids(MODEL["startable"])
+        waiting = ids(MODEL["planned"])
+        self.assertEqual(startable & waiting, set())
+        self.assertEqual(startable | waiting, todo)
 
-    def test_parked_is_not_startable(self):
-        self.assertNotIn("graph-runner", {i["id"] for i in MODEL["startable"]})
+    def test_in_flight_is_exactly_in_progress(self):
+        self.assertEqual(
+            ids(MODEL["in_flight"]),
+            ids([i for i in ITEMS if i["status"] == work_board.ACTIVE]),
+        )
 
-    def test_work_00_is_in_flight(self):
-        ids = {i["id"] for i in MODEL["in_flight"]}
-        self.assertIn("work-00", ids)
-        self.assertNotIn("pr5c", ids)
+    def test_held_is_exactly_blocked_or_parked(self):
+        self.assertEqual(
+            ids(MODEL["held"]),
+            ids([i for i in ITEMS if i["status"] in work_board.HELD]),
+        )
+
+    def test_lanes_cover_every_open_item_once(self):
+        lanes = [
+            ids(MODEL["startable"]),
+            ids(MODEL["in_flight"]),
+            ids(MODEL["held"]),
+            ids(MODEL["planned"]),
+        ]
+        union = set().union(*lanes)
+        self.assertEqual(sum(len(l) for l in lanes), len(union))
+        open_items = ids([i for i in ITEMS if i["status"] != work_board.DONE])
+        self.assertEqual(union, open_items)
+
+    def test_nothing_waits_on_an_unfinished_blocker_and_starts(self):
+        unfinished = ids([i for i in ITEMS if i["status"] != work_board.DONE])
+        for item in MODEL["startable"]:
+            self.assertEqual(set(blockers(item)) & unfinished, set(), item["id"])
 
 
 class Sequence(unittest.TestCase):
@@ -144,23 +213,41 @@ class Sequence(unittest.TestCase):
 
 
 class Render(unittest.TestCase):
-    def test_markdown_names_the_roster(self):
+    def test_markdown_names_roster_and_every_open_item(self):
         text = work_board.render_markdown(MODEL)
-        self.assertIn("berea", text)
-        self.assertIn("`pr5d`", text)
-        self.assertIn("#17", text)
+        for repo in LEDGER["roster"]:
+            self.assertIn(repo, text)
+        for item in ITEMS:
+            if item["status"] == work_board.DONE:
+                continue
+            self.assertIn(f"`{item['id']}`", text)
+            self.assertIn(f"#{item['issue']}", text)
         self.assertNotIn("{{", text)
 
-    def test_html_has_no_template_holes(self):
+    def test_markdown_counts_row_matches_model(self):
+        text = work_board.render_markdown(MODEL)
+        c = MODEL["counts"]
+        row = (
+            f"| {len(MODEL['startable'])} | {c[work_board.ACTIVE]} | "
+            f"{c[work_board.BLOCKED]} | {c[work_board.PARKED]} | "
+            f"{c[work_board.TODO]} | {c[work_board.DONE]} |"
+        )
+        self.assertIn(row, text)
+
+    def test_html_names_every_item_and_has_no_template_holes(self):
         page = work_board.render_html(MODEL)
         self.assertNotIn("{{", page)
-        self.assertIn("pr5c", page)
         self.assertIn("Startable now", page)
+        for item in ITEMS:
+            if item["status"] == work_board.DONE:
+                continue
+            self.assertIn(item["id"], page)
 
     def test_json_board_shape(self):
         items = MODEL["board_items"]
-        self.assertEqual(len(items), len(LEDGER["items"]))
-        self.assertEqual(set(items[0]), {"id", "title", "status"})
+        self.assertEqual(len(items), len(ITEMS))
+        for entry in items:
+            self.assertEqual(set(entry), {"id", "title", "status"})
 
     def test_ledger_is_valid_json(self):
         json.loads((ROOT / "work.json").read_text())
