@@ -82,10 +82,12 @@ class Classification(unittest.TestCase):
         self.assertIn("pr5c", ids)
         self.assertIn("landing-pages", ids)
 
-    def test_pr6_waits_on_pr5c(self):
+    def test_pr6_waits_on_pr5f(self):
         ids = {i["id"] for i in MODEL["startable"]}
         self.assertNotIn("pr6", ids)
         self.assertIn("pr6", {i["id"] for i in MODEL["planned"]})
+        pr6 = next(i for i in LEDGER["items"] if i["id"] == "pr6")
+        self.assertEqual(pr6["blocked_by"], ["pr5f"])
 
     def test_pr7_waits_on_pr6(self):
         self.assertNotIn("pr7", {i["id"] for i in MODEL["startable"]})

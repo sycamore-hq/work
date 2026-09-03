@@ -40,7 +40,7 @@ just check
 3. `just status-html` is regenerated in the same commit.
 
 Do not invent a second backlog. A GitHub Project is a view of `work.json`.
-Issues [#2](https://github.com/sycamore-hq/work/issues/2)–[#16](https://github.com/sycamore-hq/work/issues/16) are the cards. Project: [sycamore-hq work](https://github.com/orgs/sycamore-hq/projects/2).
+Issues [#2](https://github.com/sycamore-hq/work/issues/2)–[#19](https://github.com/sycamore-hq/work/issues/19) are the cards. Project: [sycamore-hq work](https://github.com/orgs/sycamore-hq/projects/2).
 
 `just project-seed` creates or reuses that board (see
 [`scripts/gh-project-seed`](scripts/gh-project-seed)). `gh-project` is done.

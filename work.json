@@ -1,6 +1,6 @@
 {
   "updated": "2026-09-03",
-  "source_as_of": "origin/main after fetch, 2026-09-03 17:45 UTC",
+  "source_as_of": "origin/main after fetch, 2026-09-03 19:10 UTC",
   "github_project": {
     "owner": "sycamore-hq",
     "title": "sycamore-hq work",
@@ -19,13 +19,13 @@
     {
       "id": "pr5c",
       "issue": 2,
-      "title": "PR 5 absorb: one rust law, thin gate cards, retarget graphs + harness §6",
+      "title": "PR 5c: gate cards, absorb writers, cut v1-one-law",
       "status": "todo",
       "kind": "planned",
-      "repos": ["crossr-skills", "crossr-loops", "crossr-harness"],
-      "source": "crossr-skills/docs/plans/gan-layer-separation-plan.md §4 PR 5",
+      "repos": ["crossr-skills"],
+      "source": "crossr-skills/docs/plans/pr5-one-law-prompt-set.md 5c",
       "blocked_by": [],
-      "notes": "5a rust book (#117) and 5b ocaml book (#118) landed 2026-09-03. rust-code-writer, rust-errors, rust-code-reviewer, rust-code-tester still in the catalog. No code-review or testing cards."
+      "notes": "5a (#117) and 5b (#118, 0bd2c40) are on main. rust-code-writer, rust-errors, ocaml-code-writer still in the catalog. No code-review or testing cards. No v1-one-law tag."
     },
     {
       "id": "landing-pages",
@@ -56,9 +56,9 @@
       "status": "todo",
       "kind": "hygiene",
       "repos": ["crossr-skills"],
-      "source": "features.json + progress.md + gan-layer-separation-plan.md status line vs origin/main 0bd2c40",
+      "source": "features.json + progress.md + gan-layer-separation-plan.md status + pr5-one-law-prompt-set.md vs origin/main 0bd2c40",
       "blocked_by": [],
-      "notes": "Books are on main. Tracker and plan still stop at PR 4b. #119 said 5b in flight; 5b then merged without a follow-up row."
+      "notes": "Books are on main (5a #117, 5b #118). Tracker and gan-layer-separation-plan still stop at PR 4. Prompt set still says 5b in flight. Distinct from pr5f, which closes the whole PR 5 stack."
     },
     {
       "id": "gan-close-4b",
@@ -74,13 +74,13 @@
     {
       "id": "landing-rtl",
       "issue": 7,
-      "title": "Drop rust-team-lead from the landing template",
+      "title": "PR 5g: drop rust-team-lead and retired names from landing",
       "status": "todo",
       "kind": "hygiene",
       "repos": ["crossr-web-landing"],
-      "source": "crossr-web-landing/site/templates/index.html:222",
-      "blocked_by": [],
-      "notes": "Parked on PR 5 in the gan-layer-separation plan. Harmless while the host 404s."
+      "source": "crossr-skills/docs/plans/pr5-one-law-prompt-set.md 5g",
+      "blocked_by": ["pr5c"],
+      "notes": "Rider after 5c. site/templates/index.html :222, :230, :259-260, :287. Harmless while the host 404s."
     },
     {
       "id": "landing-pins",
@@ -116,6 +116,39 @@
       "notes": "dashboard-prompt job. Do not paper over it by editing features.json alone."
     },
     {
+      "id": "pr5d",
+      "issue": 17,
+      "title": "PR 5d: loops pin, neutral code-gan, requires.book",
+      "status": "todo",
+      "kind": "planned",
+      "repos": ["crossr-loops"],
+      "source": "crossr-skills/docs/plans/pr5-one-law-prompt-set.md 5d",
+      "blocked_by": ["pr5c"],
+      "notes": "code-gan.json still names rust-code-writer / rust-code-reviewer / rust-code-tester. Cut loops tag v1-one-law-consumers on the merge commit."
+    },
+    {
+      "id": "pr5e",
+      "issue": 18,
+      "title": "PR 5e: HARNESS-SPEC §6 + lockfile books + smoke",
+      "status": "todo",
+      "kind": "planned",
+      "repos": ["crossr-harness"],
+      "source": "crossr-skills/docs/plans/pr5-one-law-prompt-set.md 5e",
+      "blocked_by": ["pr5c"],
+      "notes": "HARNESS-SPEC.md, AGENTS.md, and the harness AGENTS template still name dead skills. Pins stay v1-gan-layers / v1-cards until 5f."
+    },
+    {
+      "id": "pr5f",
+      "issue": 19,
+      "title": "PR 5f: loops pin bump + regen-agents + close PR 5 record",
+      "status": "todo",
+      "kind": "planned",
+      "repos": ["crossr-skills"],
+      "source": "crossr-skills/docs/plans/pr5-one-law-prompt-set.md 5f",
+      "blocked_by": ["pr5d", "pr5e"],
+      "notes": "Closes the PR 5 stack. Distinct from pr5-record (#5), which is the overdue 5a/5b tracker note."
+    },
+    {
       "id": "pr6",
       "issue": 11,
       "title": "PR 6: plan-writer + plan-first GAN",
@@ -123,8 +156,8 @@
       "kind": "planned",
       "repos": ["crossr-loops", "crossr-skills", "crossr-harness"],
       "source": "crossr-skills/docs/plans/gan-layer-separation-plan.md §4 PR 6",
-      "blocked_by": ["pr5c"],
-      "notes": "plan-writer is a skill, not a persona (decision #11). Architect moves to plan time."
+      "blocked_by": ["pr5f"],
+      "notes": "plan-writer is a skill, not a persona (decision #11). Architect moves to plan time. Waits on PR 5 close (5f), not 5c alone."
     },
     {
       "id": "pr7",
@@ -179,7 +212,7 @@
       "repos": ["work"],
       "source": "https://github.com/orgs/sycamore-hq/projects/2",
       "blocked_by": [],
-      "notes": "Project 'sycamore-hq work' is live. Issues #2–#16 are the cards. Roster remotes linked. Do not invent a second backlog."
+      "notes": "Project 'sycamore-hq work' is live. Issues #2–#19 are the cards. Roster remotes linked. Do not invent a second backlog."
     }
   ]
 }
