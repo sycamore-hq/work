@@ -25,12 +25,12 @@
       "id": "pr5c",
       "issue": 2,
       "title": "PR 5c: gate cards, absorb writers, cut v1-one-law",
-      "status": "done",
+      "status": "in_progress",
       "kind": "planned",
       "repos": ["crossr-skills"],
       "source": "crossr-skills/docs/plans/pr5-one-law-prompt-set.md 5c",
       "blocked_by": [],
-      "notes": "Merged as crossr-skills#120, rebase-merged 2026-09-03 as 4b8601e..507c509. Writers deleted; code-review and testing cards on main; acceptance greps zero and harness-validate green on 507c509. Tag v1-one-law goes on 507c509 (human push; not on the remote as of this ledger edit). Unblocks pr5d, pr5e, landing-rtl."
+      "notes": "Code half landed: crossr-skills#120 rebase-merged 2026-09-03 as 4b8601e..507c509; acceptance greps zero and harness-validate green on that commit. Tag half open: v1-one-law is not on the skills remote. Done when git ls-remote --tags origin v1-one-law peels to 507c509. pr5d and pr5e precondition on that tag; landing-rtl waits with them."
     },
     {
       "id": "landing-pages",
