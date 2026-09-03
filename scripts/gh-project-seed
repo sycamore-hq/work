@@ -62,4 +62,4 @@ jq -r '.items[] | select(.issue != null) | .issue' "$LEDGER" | while IFS= read -
 done
 
 echo "project: $url"
-echo "next: set Status on the board. Labels already carry kind / repo / state."
+echo "next: just project-roadmap sets Status, Lane, dates, blocked_by, and labels."

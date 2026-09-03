@@ -7,6 +7,8 @@ work.json is the record. This script is a view:
 - Lane (In progress / Next / Waiting / Held / Done) — swimlanes
 - Start date / Target date — sequence bars, not deadlines
 - Issue blocked_by edges from ledger blocked_by
+- Issue labels: kind, repo:<name>, and one state word (todo / waiting /
+  in-progress / blocked / parked; done carries none — the closed issue does)
 - Roadmap view + Next table
 
 Needs org project write. cursor[bot] does not have it.
@@ -40,6 +42,11 @@ LANES = ["In progress", "Next", "Waiting", "Held", "Done"]
 
 SPAN_DAYS = 5
 STRIDE_DAYS = 7
+
+KIND_LABELS = frozenset({"planned", "outstanding", "hygiene", "parked"})
+STATE_LABELS = frozenset({"todo", "waiting", "in-progress", "blocked", "parked"})
+LEGACY_STATE_LABELS = frozenset({"in_progress"})
+REPO_LABEL_PREFIX = "repo:"
 
 API_HEADERS = [
     "-H",
@@ -181,6 +188,45 @@ def lane_of(item: dict, done: set[str]) -> str:
     return "Next"
 
 
+def state_label(item: dict, done: set[str]) -> str | None:
+    """One state word per open item. Done items carry none. Pure."""
+    status = item.get("status")
+    if status == "in_progress":
+        return "in-progress"
+    if status in {"blocked", "parked"}:
+        return str(status)
+    if status == "done":
+        return None
+    missing = [d for d in (item.get("blocked_by") or []) if d not in done]
+    return "waiting" if missing else "todo"
+
+
+def desired_labels(item: dict, done: set[str]) -> set[str]:
+    """Kind + repo:<name> per repo + state word. Pure."""
+    labels = {f"{REPO_LABEL_PREFIX}{repo}" for repo in item.get("repos") or []}
+    kind = item.get("kind")
+    if kind:
+        labels.add(str(kind))
+    state = state_label(item, done)
+    if state:
+        labels.add(state)
+    return labels
+
+
+def is_managed_label(name: str) -> bool:
+    return (
+        name in KIND_LABELS
+        or name in STATE_LABELS
+        or name in LEGACY_STATE_LABELS
+        or name.startswith(REPO_LABEL_PREFIX)
+    )
+
+
+def reconcile_labels(current: set[str], desired: set[str]) -> set[str]:
+    """Replace every managed label with the desired set; keep the rest. Pure."""
+    return {name for name in current if not is_managed_label(name)} | desired
+
+
 def depth(item: dict, by_id: dict[str, dict], path: frozenset[str] = frozenset()) -> int:
     """Longest blocked_by chain below item. `path` is the chain being walked, so a
     blocker shared by two branches (a diamond) is not mistaken for a cycle."""
@@ -210,9 +256,57 @@ def set_item_fields(number: int, item_id: int, updates: list[dict]) -> None:
     )
 
 
-def issue_id_raw(number: int) -> int:
-    proc = run(["gh", "api", f"repos/{REPO}/issues/{number}", "--jq", ".id"])
-    return int(proc.stdout.strip())
+def issue_record(number: int) -> tuple[int, set[str]]:
+    """Raw issue id and its current label names. Action: one GET."""
+    data = gh_api(f"repos/{REPO}/issues/{number}")
+    if not isinstance(data, dict) or "id" not in data:
+        raise SystemExit(f"issue #{number} unreadable")
+    labels = {
+        str(row["name"])
+        for row in data.get("labels") or []
+        if isinstance(row, dict) and row.get("name")
+    }
+    return int(data["id"]), labels
+
+
+def ensure_label(name: str, known: set[str]) -> None:
+    """Create a repo label if it does not exist. Action."""
+    if name in known:
+        return
+    proc = subprocess.run(
+        ["gh", "api", *API_HEADERS, f"repos/{REPO}/labels/{name}"],
+        text=True,
+        capture_output=True,
+    )
+    if proc.returncode != 0:
+        gh_api(
+            f"repos/{REPO}/labels",
+            method="POST",
+            body={"name": name, "color": "ededed"},
+        )
+        print(f"created label {name}", file=sys.stderr)
+    known.add(name)
+
+
+def set_issue_labels(issue: int, labels: set[str]) -> None:
+    gh_api(
+        f"repos/{REPO}/issues/{issue}/labels",
+        method="PUT",
+        body={"labels": sorted(labels)},
+    )
+
+
+def sync_labels(issue: int, item: dict, current: set[str], done: set[str], known: set[str]) -> None:
+    """Bring one issue's managed labels in line with the ledger. Action."""
+    target = reconcile_labels(current, desired_labels(item, done))
+    if target == current:
+        return
+    for name in sorted(target - current):
+        ensure_label(name, known)
+    set_issue_labels(issue, target)
+    added = ", ".join(f"+{n}" for n in sorted(target - current))
+    removed = ", ".join(f"-{n}" for n in sorted(current - target))
+    print(f"#{issue} labels {' '.join(x for x in (added, removed) if x)}", file=sys.stderr)
 
 
 def list_blocked_by(issue: int) -> set[int]:
@@ -375,10 +469,12 @@ def main() -> int:
         set_item_fields(number, item_id, updates)
 
     numeric: dict[str, int] = {}
+    known_labels: set[str] = set()
     for item in items:
         issue = item.get("issue")
         if isinstance(issue, int):
-            numeric[item["id"]] = issue_id_raw(issue)
+            numeric[item["id"]], current = issue_record(issue)
+            sync_labels(issue, item, current, done, known_labels)
 
     for item in items:
         issue = item.get("issue")
