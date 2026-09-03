@@ -39,20 +39,46 @@ STATUS_MAP = {
 SPAN_DAYS = 5
 STRIDE_DAYS = 7
 
+API_HEADERS = [
+    "-H",
+    "Accept: application/vnd.github+json",
+    "-H",
+    "X-GitHub-Api-Version: 2026-03-10",
+]
 
-def run(args: list[str], *, ok: tuple[int, ...] = (0,)) -> subprocess.CompletedProcess[str]:
-    proc = subprocess.run(args, text=True, capture_output=True)
+
+def run(args: list[str], *, ok: tuple[int, ...] = (0,), input_text: str | None = None) -> subprocess.CompletedProcess[str]:
+    proc = subprocess.run(args, text=True, capture_output=True, input=input_text)
     if proc.returncode not in ok:
         sys.stderr.write(proc.stderr)
         raise SystemExit(f"failed ({proc.returncode}): {' '.join(args)}")
     return proc
 
 
-def gh_json(args: list[str]) -> object:
-    proc = run(["gh", *args])
+def gh_json(args: list[str], *, input_text: str | None = None, ok: tuple[int, ...] = (0,)) -> object:
+    proc = run(["gh", *args], ok=ok, input_text=input_text)
     if not proc.stdout.strip():
         return None
     return json.loads(proc.stdout)
+
+
+def gh_api(path: str, *, method: str | None = None, body: object | None = None, ok: tuple[int, ...] = (0,)) -> object:
+    args = ["api", *API_HEADERS]
+    if method:
+        args += ["--method", method]
+    args.append(path)
+    input_text = None
+    if body is not None:
+        args += ["--input", "-"]
+        input_text = json.dumps(body)
+    return gh_json(args, input_text=input_text, ok=ok)
+
+
+def option_name(opt: dict) -> str:
+    name = opt.get("name")
+    if isinstance(name, dict):
+        return str(name.get("raw") or name.get("html") or "")
+    return str(name or "")
 
 
 def load_ledger() -> dict:
@@ -63,8 +89,8 @@ def load_ledger() -> dict:
 
 
 def project_number() -> int:
-    listing = gh_json(["project", "list", "--owner", OWNER, "--format", "json", "--limit", "100"])
-    projects = (listing or {}).get("projects") or []
+    listing = gh_api(f"orgs/{OWNER}/projectsV2?per_page=100")
+    projects = listing if isinstance(listing, list) else (listing or {}).get("projects") or []
     for project in projects:
         if project.get("title") == TITLE:
             return int(project["number"])
@@ -72,10 +98,12 @@ def project_number() -> int:
 
 
 def field_list(number: int) -> dict[str, dict]:
-    data = gh_json(["project", "field-list", str(number), "--owner", OWNER, "--format", "json"])
+    data = gh_api(f"orgs/{OWNER}/projectsV2/{number}/fields")
+    rows = data if isinstance(data, list) else (data or {}).get("fields") or []
     fields = {}
-    for field in (data or {}).get("fields") or []:
-        fields[field["name"]] = field
+    for field in rows:
+        if isinstance(field, dict) and field.get("name"):
+            fields[field["name"]] = field
     return fields
 
 
@@ -83,20 +111,10 @@ def ensure_date_fields(number: int, fields: dict[str, dict]) -> None:
     for name in ("Start date", "Target date"):
         if name in fields:
             continue
-        created = gh_json(
-            [
-                "project",
-                "field-create",
-                str(number),
-                "--owner",
-                OWNER,
-                "--name",
-                name,
-                "--data-type",
-                "DATE",
-                "--format",
-                "json",
-            ]
+        created = gh_api(
+            f"orgs/{OWNER}/projectsV2/{number}/fields",
+            method="POST",
+            body={"name": name, "data_type": "date"},
         )
         print(f"created field {name}", file=sys.stderr)
         if isinstance(created, dict):
@@ -106,26 +124,39 @@ def ensure_date_fields(number: int, fields: dict[str, dict]) -> None:
 def ensure_lane_field(number: int, fields: dict[str, dict]) -> None:
     if "Lane" in fields:
         return
-    created = gh_json(
-        [
-            "project",
-            "field-create",
-            str(number),
-            "--owner",
-            OWNER,
-            "--name",
-            "Lane",
-            "--data-type",
-            "SINGLE_SELECT",
-            "--single-select-options",
-            "In progress,Next,Waiting,Held",
-            "--format",
-            "json",
-        ]
+    created = gh_api(
+        f"orgs/{OWNER}/projectsV2/{number}/fields",
+        method="POST",
+        body={
+            "name": "Lane",
+            "data_type": "single_select",
+            "options": ["In progress", "Next", "Waiting", "Held"],
+        },
     )
     print("created field Lane", file=sys.stderr)
     if isinstance(created, dict):
         fields["Lane"] = created
+
+
+def select_options(field: dict) -> dict[str, str]:
+    out: dict[str, str] = {}
+    for opt in field.get("options") or []:
+        if isinstance(opt, dict) and opt.get("id"):
+            out[option_name(opt)] = str(opt["id"])
+    return out
+
+
+def item_ids_by_issue(number: int) -> dict[int, int]:
+    data = gh_api(f"orgs/{OWNER}/projectsV2/{number}/items?per_page=100")
+    rows = data if isinstance(data, list) else (data or {}).get("items") or []
+    out: dict[int, int] = {}
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        issue = (row.get("content") or {}).get("number")
+        if isinstance(issue, int) and row.get("id") is not None:
+            out[issue] = int(row["id"])
+    return out
 
 
 def lane_of(item: dict, done: set[str]) -> str:
@@ -163,30 +194,12 @@ def sequence_dates(
     return start, start + _dt.timedelta(days=SPAN_DAYS)
 
 
-def set_field(number: int, issue: int, field: str, *, value: str | None = None, date: str | None = None) -> None:
-    url = f"https://github.com/{REPO}/issues/{issue}"
-    args = [
-        "gh",
-        "project",
-        "item-edit",
-        str(number),
-        "--owner",
-        OWNER,
-        "--url",
-        url,
-        "--field",
-        field,
-    ]
-    if date is not None:
-        args += ["--date", date]
-    elif value is not None:
-        args += ["--value", value]
-    else:
-        raise SystemExit("set_field needs value or date")
-    proc = subprocess.run(args, text=True, capture_output=True)
-    if proc.returncode != 0:
-        sys.stderr.write(f"{field} on #{issue}: {proc.stderr or proc.stdout}")
-        raise SystemExit(proc.returncode)
+def set_item_fields(number: int, item_id: int, updates: list[dict]) -> None:
+    gh_api(
+        f"orgs/{OWNER}/projectsV2/{number}/items/{item_id}",
+        method="PATCH",
+        body={"fields": updates},
+    )
 
 
 def issue_id_raw(number: int) -> int:
@@ -196,7 +209,7 @@ def issue_id_raw(number: int) -> int:
 
 def list_blocked_by(issue: int) -> set[int]:
     proc = subprocess.run(
-        ["gh", "api", f"repos/{REPO}/issues/{issue}/dependencies/blocked_by"],
+        ["gh", "api", *API_HEADERS, f"repos/{REPO}/issues/{issue}/dependencies/blocked_by"],
         text=True,
         capture_output=True,
     )
@@ -223,101 +236,94 @@ def add_blocked_by(issue: int, blocker_id: int) -> None:
         [
             "gh",
             "api",
+            *API_HEADERS,
             "--method",
             "POST",
             f"repos/{REPO}/issues/{issue}/dependencies/blocked_by",
-            "-f",
-            f"issue_id={blocker_id}",
+            "--input",
+            "-",
         ],
         text=True,
         capture_output=True,
+        input=json.dumps({"issue_id": int(blocker_id)}),
     )
     if proc.returncode == 0:
         return
     text = (proc.stderr or "") + (proc.stdout or "")
-    if "already" in text.lower() or "422" in text:
+    if "already" in text.lower() or "already been taken" in text.lower() or "422" in text:
         return
     sys.stderr.write(text)
     raise SystemExit(f"blocked_by #{issue} <- {blocker_id} failed")
 
 
+def seeded_views(number: int) -> dict[str, dict]:
+    known = {2: ("Roadmap", "roadmap"), 3: ("Next", "table")}
+    found: dict[str, dict] = {}
+    for view_number, (name, layout) in known.items():
+        proc = subprocess.run(
+            [
+                "gh",
+                "api",
+                *API_HEADERS,
+                f"orgs/{OWNER}/projectsV2/{number}/views/{view_number}/items?per_page=1",
+            ],
+            text=True,
+            capture_output=True,
+        )
+        if proc.returncode != 0:
+            continue
+        found[name] = {
+            "name": name,
+            "layout": layout,
+            "number": view_number,
+            "html_url": f"https://github.com/orgs/{OWNER}/projects/{number}/views/{view_number}",
+        }
+    return found
+
+
 def existing_views(number: int) -> dict[str, dict]:
-    query = (
-        "query($owner: String!, $number: Int!) {"
-        " organization(login: $owner) {"
-        "  projectV2(number: $number) {"
-        "   views(first: 20) { nodes { id name layout number } }"
-        "  }"
-        " }"
-        "}"
-    )
-    data = gh_json(
-        [
-            "api",
-            "graphql",
-            "-f",
-            f"query={query}",
-            "-F",
-            f"owner={OWNER}",
-            "-F",
-            f"number={number}",
-        ]
-    )
-    nodes = (
-        (((data or {}).get("data") or {}).get("organization") or {})
-        .get("projectV2")
-        or {}
-    ).get("views", {}).get("nodes") or []
-    return {n["name"]: n for n in nodes if n.get("name")}
-
-
-def rest_fields(number: int) -> dict[str, int]:
     proc = subprocess.run(
-        ["gh", "api", f"orgs/{OWNER}/projectsV2/{number}/fields"],
+        ["gh", "api", *API_HEADERS, f"orgs/{OWNER}/projectsV2/{number}/views"],
         text=True,
         capture_output=True,
     )
-    if proc.returncode != 0:
-        return {}
-    payload = json.loads(proc.stdout) if proc.stdout.strip() else []
-    rows = payload if isinstance(payload, list) else payload.get("fields") or payload.get("items") or []
+    if proc.returncode == 0 and proc.stdout.strip():
+        payload = json.loads(proc.stdout)
+        rows = payload if isinstance(payload, list) else payload.get("views") or payload.get("items") or []
+        return {n["name"]: n for n in rows if isinstance(n, dict) and n.get("name")}
+    return seeded_views(number)
+
+
+def rest_fields(number: int) -> dict[str, int]:
     out = {}
-    for row in rows:
-        if isinstance(row, dict) and row.get("name") and row.get("id"):
-            out[row["name"]] = int(row["id"])
+    for name, field in field_list(number).items():
+        if field.get("id") is not None:
+            out[name] = int(field["id"])
     return out
 
 
 def ensure_view(number: int, name: str, layout: str, *, filter_q: str | None = None, group_field: int | None = None) -> dict:
     views = existing_views(number)
     if name in views:
-        print(f"reusing view {name} ({views[name].get('layout')})", file=sys.stderr)
-        return views[name]
+        view = views[name]
+        if not view.get("html_url") and view.get("number") is not None:
+            view["html_url"] = f"https://github.com/orgs/{OWNER}/projects/{number}/views/{view['number']}"
+        print(f"reusing view {name} ({view.get('layout')})", file=sys.stderr)
+        return view
     body: dict = {"name": name, "layout": layout}
     if filter_q:
         body["filter"] = filter_q
     if group_field is not None:
         body["group_by"] = [group_field]
-    proc = subprocess.run(
-        [
-            "gh",
-            "api",
-            "--method",
-            "POST",
-            f"orgs/{OWNER}/projectsV2/{number}/views",
-            "--input",
-            "-",
-        ],
-        text=True,
-        capture_output=True,
-        input=json.dumps(body),
+    created = gh_api(
+        f"orgs/{OWNER}/projectsV2/{number}/views",
+        method="POST",
+        body=body,
     )
-    if proc.returncode != 0:
-        sys.stderr.write(proc.stderr or proc.stdout)
-        raise SystemExit(f"create view {name} failed")
-    created = json.loads(proc.stdout)
-    print(f"created view {name} → {created.get('html_url')}", file=sys.stderr)
-    return created
+    if isinstance(created, dict):
+        print(f"created view {name} → {created.get('html_url')}", file=sys.stderr)
+        return created
+    raise SystemExit(f"create view {name} failed")
 
 
 def main() -> int:
@@ -333,24 +339,32 @@ def main() -> int:
     fields = field_list(number)
     ensure_date_fields(number, fields)
     ensure_lane_field(number, fields)
+    status_opts = select_options(fields["Status"])
+    lane_opts = select_options(fields["Lane"])
+    issue_items = item_ids_by_issue(number)
 
     for item in items:
         issue = item.get("issue")
         if not isinstance(issue, int):
             continue
+        item_id = issue_items.get(issue)
+        if item_id is None:
+            raise SystemExit(f"#{issue} is not on the project; run just project-seed")
         status_value = STATUS_MAP[item["status"]]
-        set_field(number, issue, "Status", value=status_value)
-        set_field(number, issue, "Lane", value=lane_of(item, done))
+        lane = lane_of(item, done)
+        updates = [
+            {"id": fields["Status"]["id"], "value": status_opts[status_value]},
+            {"id": fields["Lane"]["id"], "value": lane_opts[lane]},
+        ]
         dates = sequence_dates(item, by_id, today)
-        if dates is None:
-            continue
-        start, target = dates
-        set_field(number, issue, "Start date", date=start.isoformat())
-        set_field(number, issue, "Target date", date=target.isoformat())
-        print(
-            f"#{issue} {item['id']} {status_value} {lane_of(item, done)} {start}→{target}",
-            file=sys.stderr,
-        )
+        if dates is not None:
+            start, target = dates
+            updates.append({"id": fields["Start date"]["id"], "value": start.isoformat()})
+            updates.append({"id": fields["Target date"]["id"], "value": target.isoformat()})
+            print(f"#{issue} {item['id']} {status_value} {lane} {start}→{target}", file=sys.stderr)
+        else:
+            print(f"#{issue} {item['id']} {status_value} {lane}", file=sys.stderr)
+        set_item_fields(number, item_id, updates)
 
     numeric: dict[str, int] = {}
     for item in items:
@@ -377,13 +391,12 @@ def main() -> int:
             print(f"#{issue} blocked by #{blocker_issue} ({dep})", file=sys.stderr)
 
     rest = rest_fields(number)
-    lane_rest = rest.get("Lane")
     roadmap = ensure_view(
         number,
         "Roadmap",
         "roadmap",
         filter_q="-status:Done",
-        group_field=lane_rest,
+        group_field=rest.get("Lane"),
     )
     nxt = ensure_view(
         number,
@@ -392,10 +405,8 @@ def main() -> int:
         filter_q="Lane:Next",
     )
 
-    roadmap_url = roadmap.get("html_url") or f"https://github.com/orgs/{OWNER}/projects/{number}"
-    next_url = nxt.get("html_url") or roadmap_url
-    print(f"roadmap: {roadmap_url}")
-    print(f"next: {next_url}")
+    print(f"roadmap: {roadmap.get('html_url') or f'https://github.com/orgs/{OWNER}/projects/{number}'}")
+    print(f"next: {nxt.get('html_url') or roadmap.get('html_url')}")
     return 0
 
 
