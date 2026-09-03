@@ -4,7 +4,7 @@
 work.json is the record. This script is a view:
 
 - Status (Todo / In Progress / Done)
-- Lane (In progress / Next / Waiting / Held) — swimlanes
+- Lane (In progress / Next / Waiting / Held / Done) — swimlanes
 - Start date / Target date — sequence bars, not deadlines
 - Issue blocked_by edges from ledger blocked_by
 - Roadmap view + Next table
@@ -35,6 +35,8 @@ STATUS_MAP = {
     "blocked": "Todo",
     "parked": "Todo",
 }
+
+LANES = ["In progress", "Next", "Waiting", "Held", "Done"]
 
 SPAN_DAYS = 5
 STRIDE_DAYS = 7
@@ -123,6 +125,12 @@ def ensure_date_fields(number: int, fields: dict[str, dict]) -> None:
 
 def ensure_lane_field(number: int, fields: dict[str, dict]) -> None:
     if "Lane" in fields:
+        missing = [lane for lane in LANES if lane not in select_options(fields["Lane"])]
+        if missing:
+            raise SystemExit(
+                f"Lane field is missing options {missing}; "
+                "add them in the project settings, then rerun"
+            )
         return
     created = gh_api(
         f"orgs/{OWNER}/projectsV2/{number}/fields",
@@ -130,7 +138,7 @@ def ensure_lane_field(number: int, fields: dict[str, dict]) -> None:
         body={
             "name": "Lane",
             "data_type": "single_select",
-            "options": ["In progress", "Next", "Waiting", "Held"],
+            "options": LANES,
         },
     )
     print("created field Lane", file=sys.stderr)
@@ -166,7 +174,7 @@ def lane_of(item: dict, done: set[str]) -> str:
     if status in {"blocked", "parked"}:
         return "Held"
     if status == "done":
-        return "Held"
+        return "Done"
     missing = [d for d in (item.get("blocked_by") or []) if d not in done]
     if missing:
         return "Waiting"
