@@ -1,0 +1,19 @@
+{
+  "board": {
+    "status": "in_progress",
+    "commits": [
+      {
+        "id": "work-00",
+        "title": "Stand up the org ledger: work.json, renderer, HTML",
+        "status": "in_progress",
+        "features": [
+          "work_json",
+          "work_board_renderer",
+          "html_board",
+          "justfile",
+          "classification_tests"
+        ]
+      }
+    ]
+  }
+}

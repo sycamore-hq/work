@@ -1,0 +1,13 @@
+{
+  "status_map": {
+    "done": ["done", "completed"],
+    "active": ["in_progress", "in progress"]
+  },
+  "board": {
+    "command": ["python3", "scripts/work-board", "--json"],
+    "items_path": "items",
+    "fields": {"id": "id", "title": "title", "status": "status"}
+  },
+  "features_file": "features.json",
+  "progress_file": "progress.md"
+}
