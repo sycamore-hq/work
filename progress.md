@@ -17,6 +17,14 @@ Roster read 2026-09-03 from origin after fetch:
 Issues #2–#19 are the Project cards. Project
 https://github.com/orgs/sycamore-hq/projects/2.
 
+In progress (started 2026-09-03): `pr5c` #2, `loops-lockfile` #9,
+`dashboard-phase` #10, `berea-002` #13, plus `work-00` #15.
+
+Roadmap view is a view of this ledger (`just project-roadmap`): Status, Lane,
+sequence dates, and GitHub issue `blocked_by` edges. Dates are topology, not
+deadlines. Next after the four in-flight items: `landing-pages` #3,
+`pr5-record` #5, `gan-close-4b` #6, `landing-pins` #8.
+
 Plan audit 2026-09-03 against skills `origin/main` `0bd2c40`:
 
 - Split plan: complete. Leftovers already on the board (`landing-pages`,
