@@ -5,7 +5,8 @@
     "owner": "sycamore-hq",
     "title": "sycamore-hq work",
     "url": "https://github.com/orgs/sycamore-hq/projects/2",
-    "seed": "just project-seed"
+    "seed": "just project-seed",
+    "roadmap": "just project-roadmap"
   },
   "roster": [
     "berea",
@@ -20,7 +21,7 @@
       "id": "pr5c",
       "issue": 2,
       "title": "PR 5c: gate cards, absorb writers, cut v1-one-law",
-      "status": "todo",
+      "status": "in_progress",
       "kind": "planned",
       "repos": ["crossr-skills"],
       "source": "crossr-skills/docs/plans/pr5-one-law-prompt-set.md 5c",
@@ -97,7 +98,7 @@
       "id": "loops-lockfile",
       "issue": 9,
       "title": "loops lockfile says loops=v0 while the repo tagged v1-cards",
-      "status": "todo",
+      "status": "in_progress",
       "kind": "hygiene",
       "repos": ["crossr-loops"],
       "source": "crossr-loops/lockfile.toml vs git tag v1-cards",
@@ -108,7 +109,7 @@
       "id": "dashboard-phase",
       "issue": 10,
       "title": "status-dashboard totals ignore phase-level in_progress",
-      "status": "todo",
+      "status": "in_progress",
       "kind": "hygiene",
       "repos": ["crossr-harness"],
       "source": "crossr-harness/scripts/status-dashboard totals() counts commits only",
@@ -174,12 +175,12 @@
       "id": "berea-002",
       "issue": 13,
       "title": "berea 002-memory-notes",
-      "status": "todo",
+      "status": "in_progress",
       "kind": "planned",
       "repos": ["berea"],
       "source": "berea/specs/INDEX.md",
       "blocked_by": [],
-      "notes": "Status specified, horizon next, 0/0 tasks. Not started."
+      "notes": "Status specified, horizon next. Started 2026-09-03."
     },
     {
       "id": "graph-runner",
