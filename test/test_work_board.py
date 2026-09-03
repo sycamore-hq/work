@@ -87,12 +87,13 @@ class Classification(unittest.TestCase):
         self.assertEqual(MODEL["counts"][work_board.PARKED], raw["parked"])
         self.assertEqual(MODEL["counts"][work_board.DONE], raw.get("done", 0))
 
-    def test_startable_matches_the_ledger(self):
+    def test_pr5c_done_unblocks_5d_5e_5g(self):
+        pr5c = next(i for i in LEDGER["items"] if i["id"] == "pr5c")
+        self.assertEqual(pr5c["status"], "done")
         ids = {i["id"] for i in MODEL["startable"]}
-        self.assertEqual(
-            ids, {"landing-pages", "pr5-record", "gan-close-4b", "landing-pins"}
-        )
         self.assertNotIn("pr5c", ids)
+        for unblocked in ("pr5d", "pr5e", "landing-rtl", "landing-pages"):
+            self.assertIn(unblocked, ids)
 
     def test_pr6_waits_on_pr5f(self):
         ids = {i["id"] for i in MODEL["startable"]}
@@ -113,7 +114,9 @@ class Classification(unittest.TestCase):
         self.assertNotIn("graph-runner", {i["id"] for i in MODEL["startable"]})
 
     def test_work_00_is_in_flight(self):
-        self.assertIn("work-00", {i["id"] for i in MODEL["in_flight"]})
+        ids = {i["id"] for i in MODEL["in_flight"]}
+        self.assertIn("work-00", ids)
+        self.assertNotIn("pr5c", ids)
 
 
 class Sequence(unittest.TestCase):
@@ -144,8 +147,8 @@ class Render(unittest.TestCase):
     def test_markdown_names_the_roster(self):
         text = work_board.render_markdown(MODEL)
         self.assertIn("berea", text)
-        self.assertIn("`pr5c`", text)
-        self.assertIn("#2", text)
+        self.assertIn("`pr5d`", text)
+        self.assertIn("#17", text)
         self.assertNotIn("{{", text)
 
     def test_html_has_no_template_holes(self):

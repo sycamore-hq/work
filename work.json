@@ -1,6 +1,6 @@
 {
   "updated": "2026-09-03",
-  "source_as_of": "origin/main after fetch, 2026-09-03 19:10 UTC",
+  "source_as_of": "origin/main after fetch, 2026-09-03 22:00 UTC",
   "github_project": {
     "owner": "sycamore-hq",
     "title": "sycamore-hq work",
@@ -25,12 +25,12 @@
       "id": "pr5c",
       "issue": 2,
       "title": "PR 5c: gate cards, absorb writers, cut v1-one-law",
-      "status": "in_progress",
+      "status": "done",
       "kind": "planned",
       "repos": ["crossr-skills"],
       "source": "crossr-skills/docs/plans/pr5-one-law-prompt-set.md 5c",
       "blocked_by": [],
-      "notes": "5a (#117) and 5b (#118, 0bd2c40) are on main. rust-code-writer, rust-errors, ocaml-code-writer still in the catalog. No code-review or testing cards. No v1-one-law tag."
+      "notes": "Merged as crossr-skills#120, rebase-merged 2026-09-03 as 4b8601e..507c509. Writers deleted; code-review and testing cards on main; acceptance greps zero and harness-validate green on 507c509. Tag v1-one-law goes on 507c509 (human push; not on the remote as of this ledger edit). Unblocks pr5d, pr5e, landing-rtl."
     },
     {
       "id": "landing-pages",
