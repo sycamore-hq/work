@@ -25,10 +25,13 @@ In progress (started 2026-09-03): `loops-lockfile` #9,
 `507c509`; tag `v1-one-law` (`88d9ee2`) peels to `507c509` on the skills
 remote. `pr5d` #17, `pr5e` #18, `landing-rtl` #7 are startable.
 
-`just project-roadmap` now owns issue labels too: kind, `repo:<name>` per
-repo, and one state word (`todo` / `waiting` / `in-progress` / `blocked` /
-`parked`; done carries none). Managed labels are replaced from the ledger,
-anything else on the issue is left alone. Pure derivation + reconcile are
+`just project-roadmap` now owns issue labels and open/closed state too.
+Labels: kind, `repo:<name>` per repo, one state word (`todo` / `waiting` /
+`in-progress` / `blocked` / `parked`; done carries none). State: done
+closes as completed, anything else reopens. The git repository wins every
+vote; a hand-closed issue whose ledger item is still open comes back (#9
+at time of writing). Managed labels are replaced from the ledger, anything
+else on the issue is left alone. Pure derivation + reconcile are
 unit-tested; the `gh` half runs where org project write exists.
 
 Tests assert ledger invariants (startable ⇔ todo, unparked, blockers done;
