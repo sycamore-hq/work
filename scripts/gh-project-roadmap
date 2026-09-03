@@ -181,16 +181,16 @@ def lane_of(item: dict, done: set[str]) -> str:
     return "Next"
 
 
-def depth(item: dict, by_id: dict[str, dict], seen: set[str] | None = None) -> int:
-    seen = seen or set()
+def depth(item: dict, by_id: dict[str, dict], path: frozenset[str] = frozenset()) -> int:
+    """Longest blocked_by chain below item. `path` is the chain being walked, so a
+    blocker shared by two branches (a diamond) is not mistaken for a cycle."""
     ident = item["id"]
-    if ident in seen:
+    if ident in path:
         raise SystemExit(f"cycle at {ident}")
     deps = item.get("blocked_by") or []
     if not deps:
         return 0
-    seen.add(ident)
-    return 1 + max(depth(by_id[dep], by_id, seen) for dep in deps)
+    return 1 + max(depth(by_id[dep], by_id, path | {ident}) for dep in deps)
 
 
 def sequence_dates(

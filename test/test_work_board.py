@@ -19,6 +19,16 @@ work_board = importlib.util.module_from_spec(_spec)
 assert _spec.loader is not None
 _spec.loader.exec_module(work_board)
 
+_roadmap_spec = importlib.util.spec_from_loader(
+    "gh_project_roadmap",
+    importlib.machinery.SourceFileLoader(
+        "gh_project_roadmap", str(ROOT / "scripts" / "gh-project-roadmap")
+    ),
+)
+roadmap = importlib.util.module_from_spec(_roadmap_spec)
+assert _roadmap_spec.loader is not None
+_roadmap_spec.loader.exec_module(roadmap)
+
 LEDGER = work_board.load_ledger(ROOT / "work.json")
 MODEL = work_board.model(LEDGER, "test")
 
@@ -104,6 +114,30 @@ class Classification(unittest.TestCase):
 
     def test_work_00_is_in_flight(self):
         self.assertIn("work-00", {i["id"] for i in MODEL["in_flight"]})
+
+
+class Sequence(unittest.TestCase):
+    @staticmethod
+    def graph(**edges):
+        return {k: {"id": k, "blocked_by": list(v)} for k, v in edges.items()}
+
+    def test_depth_counts_the_longest_chain(self):
+        by_id = self.graph(a=(), b=("a",), c=("b",))
+        self.assertEqual(roadmap.depth(by_id["c"], by_id), 2)
+
+    def test_depth_walks_a_diamond_without_crying_cycle(self):
+        by_id = self.graph(x=(), c=("x",), d=("c",), e=("c",), f=("d", "e"))
+        self.assertEqual(roadmap.depth(by_id["f"], by_id), 3)
+
+    def test_depth_rejects_a_real_cycle(self):
+        by_id = self.graph(a=("b",), b=("a",))
+        with self.assertRaises(SystemExit):
+            roadmap.depth(by_id["a"], by_id)
+
+    def test_ledger_has_no_cycles(self):
+        by_id = {i["id"]: i for i in LEDGER["items"]}
+        for item in LEDGER["items"]:
+            roadmap.depth(item, by_id)
 
 
 class Render(unittest.TestCase):
