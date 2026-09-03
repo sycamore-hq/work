@@ -107,5 +107,17 @@ class LedgerWide(unittest.TestCase):
                 self.assertTrue(roadmap.is_managed_label(name), f"{entry['id']}: {name}")
 
 
+class IssueState(unittest.TestCase):
+    def test_done_closes(self):
+        self.assertEqual(roadmap.desired_issue_state(item("done")), "closed")
+
+    def test_every_other_status_stays_open(self):
+        for status in ("todo", "in_progress", "blocked", "parked"):
+            self.assertEqual(roadmap.desired_issue_state(item(status)), "open", status)
+
+    def test_ledger_wide_closed_set_is_exactly_done(self):
+        closed = {i["id"] for i in ITEMS if roadmap.desired_issue_state(i) == "closed"}
+        self.assertEqual(closed, DONE)
+
 if __name__ == "__main__":
     unittest.main()

@@ -29,9 +29,11 @@ Use catalog skills from a `crossr-skills` checkout when writing or briefing.
 ## Ledger rules
 
 - `work.json` is the record. The HTML is a view. The GitHub Project is a view.
+  The issues are a view. The git repository wins every vote.
   `just project-roadmap` refreshes Status, Lane, sequence dates, issue
-  `blocked_by`, and issue labels (kind, `repo:<name>`, one state word) from
-  this ledger. Never edit those labels by hand.
+  `blocked_by`, issue labels (kind, `repo:<name>`, one state word), and issue
+  open/closed state (done closes, anything else reopens) from this ledger.
+  Never edit those by hand; edit the ledger and refresh.
 - An item the files do not name is not on the board.
 - Status words: `done`, `in_progress`, `todo`, `blocked`, `parked`.
 - Startable means `todo`, no unmet `blocked_by`, not parked.
