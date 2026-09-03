@@ -1,0 +1,164 @@
+{
+  "updated": "2026-09-03",
+  "source_as_of": "origin/main after fetch, 2026-09-03 17:45 UTC",
+  "roster": [
+    "berea",
+    "crossr-harness",
+    "crossr-loops",
+    "crossr-skills",
+    "crossr-web-landing",
+    "work"
+  ],
+  "items": [
+    {
+      "id": "pr5c",
+      "title": "PR 5 absorb: one rust law, thin gate cards, retarget graphs + harness §6",
+      "status": "todo",
+      "kind": "planned",
+      "repos": ["crossr-skills", "crossr-loops", "crossr-harness"],
+      "source": "crossr-skills/docs/plans/gan-layer-separation-plan.md §4 PR 5",
+      "blocked_by": [],
+      "notes": "5a rust book (#117) and 5b ocaml book (#118) landed 2026-09-03. rust-code-writer, rust-errors, rust-code-reviewer, rust-code-tester still in the catalog. No code-review or testing cards."
+    },
+    {
+      "id": "landing-pages",
+      "title": "Turn landing Pages on, or stop pointing at the 404",
+      "status": "todo",
+      "kind": "outstanding",
+      "repos": ["crossr-web-landing", "crossr-skills"],
+      "source": "curl https://sycamore-hq.github.io/crossr-web-landing/ → 404; skills stub meta-refreshes there",
+      "blocked_by": [],
+      "notes": "web-05 workflow is in the tree (39084fd, 2026-08-29). Skills Pages is a live 'moved' stub. The destination is dead."
+    },
+    {
+      "id": "berea-003",
+      "title": "berea 003-harness-and-hygiene (CI + hygiene)",
+      "status": "blocked",
+      "kind": "outstanding",
+      "repos": ["berea"],
+      "source": "berea/specs/INDEX.md · specs/003-harness-and-hygiene/tasks.md",
+      "blocked_by": [],
+      "notes": "INDEX: blocked, horizon now, 8/10. Next named task T020 is CI (dune build @melange, git diff --exit-code, bun run check). T000 and T010 are done."
+    },
+    {
+      "id": "pr5-record",
+      "title": "Record 5a/5b on the skills tracker and plan header",
+      "status": "todo",
+      "kind": "hygiene",
+      "repos": ["crossr-skills"],
+      "source": "features.json + progress.md + gan-layer-separation-plan.md status line vs origin/main 0bd2c40",
+      "blocked_by": [],
+      "notes": "Books are on main. Tracker and plan still stop at PR 4b. #119 said 5b in flight; 5b then merged without a follow-up row."
+    },
+    {
+      "id": "gan-close-4b",
+      "title": "Close gan-layer-separation PRs 0–4b on the three remotes",
+      "status": "todo",
+      "kind": "hygiene",
+      "repos": ["crossr-skills", "crossr-loops", "crossr-harness"],
+      "source": "features.json phase status in_progress, every child commit completed",
+      "blocked_by": [],
+      "notes": "Why the per-repo dashboard prints 100% done and 0 in progress. Phase left open after 4b."
+    },
+    {
+      "id": "landing-rtl",
+      "title": "Drop rust-team-lead from the landing template",
+      "status": "todo",
+      "kind": "hygiene",
+      "repos": ["crossr-web-landing"],
+      "source": "crossr-web-landing/site/templates/index.html:222",
+      "blocked_by": [],
+      "notes": "Parked on PR 5 in the gan-layer-separation plan. Harmless while the host 404s."
+    },
+    {
+      "id": "landing-pins",
+      "title": "Landing README still lists v0 pins",
+      "status": "todo",
+      "kind": "hygiene",
+      "repos": ["crossr-web-landing"],
+      "source": "crossr-web-landing/README.md sibling list",
+      "blocked_by": [],
+      "notes": "Consumers are skills=v1-gan-layers, loops=v1-cards. Charter freeze still names v0."
+    },
+    {
+      "id": "loops-lockfile",
+      "title": "loops lockfile says loops=v0 while the repo tagged v1-cards",
+      "status": "todo",
+      "kind": "hygiene",
+      "repos": ["crossr-loops"],
+      "source": "crossr-loops/lockfile.toml vs git tag v1-cards",
+      "blocked_by": [],
+      "notes": "Harness and skills already pin loops=v1-cards. Confirm whether the loops lockfile is a consumer pin or a self-advertisement."
+    },
+    {
+      "id": "dashboard-phase",
+      "title": "status-dashboard totals ignore phase-level in_progress",
+      "status": "todo",
+      "kind": "hygiene",
+      "repos": ["crossr-harness"],
+      "source": "crossr-harness/scripts/status-dashboard totals() counts commits only",
+      "blocked_by": [],
+      "notes": "dashboard-prompt job. Do not paper over it by editing features.json alone."
+    },
+    {
+      "id": "pr6",
+      "title": "PR 6: plan-writer + plan-first GAN",
+      "status": "todo",
+      "kind": "planned",
+      "repos": ["crossr-loops", "crossr-skills", "crossr-harness"],
+      "source": "crossr-skills/docs/plans/gan-layer-separation-plan.md §4 PR 6",
+      "blocked_by": ["pr5c"],
+      "notes": "plan-writer is a skill, not a persona (decision #11). Architect moves to plan time."
+    },
+    {
+      "id": "pr7",
+      "title": "PR 7: handoff packets, envelopes, AVRIL batching",
+      "status": "todo",
+      "kind": "planned",
+      "repos": ["crossr-loops", "crossr-skills"],
+      "source": "crossr-skills/docs/plans/gan-layer-separation-plan.md §4 PR 7",
+      "blocked_by": ["pr6"],
+      "notes": "Per-item BLESS tokens. No blanket BLESS over a set."
+    },
+    {
+      "id": "berea-002",
+      "title": "berea 002-memory-notes",
+      "status": "todo",
+      "kind": "planned",
+      "repos": ["berea"],
+      "source": "berea/specs/INDEX.md",
+      "blocked_by": [],
+      "notes": "Status specified, horizon next, 0/0 tasks. Not started."
+    },
+    {
+      "id": "graph-runner",
+      "title": "Graph runner (loops backlog)",
+      "status": "parked",
+      "kind": "parked",
+      "repos": ["crossr-loops"],
+      "source": "crossr-skills progress.md after split-09; landing cut 'Not this chain'",
+      "blocked_by": [],
+      "notes": "Named as not-this-chain after the four-remote cut. No runner. No Rhai."
+    },
+    {
+      "id": "work-00",
+      "title": "Stand up this org ledger",
+      "status": "in_progress",
+      "kind": "outstanding",
+      "repos": ["work"],
+      "source": "this repository",
+      "blocked_by": [],
+      "notes": "work.json is the record. The HTML is a view. GitHub Project is owed (gh-project)."
+    },
+    {
+      "id": "gh-project",
+      "title": "Create the org GitHub Project (bot cannot)",
+      "status": "todo",
+      "kind": "hygiene",
+      "repos": ["work"],
+      "source": "gh project create --owner sycamore-hq → cursor[bot] lacks createProjectV2",
+      "blocked_by": [],
+      "notes": "Human creates Project 'sycamore-hq work', then seed draft items from work.json. Do not invent a second backlog."
+    }
+  ]
+}
