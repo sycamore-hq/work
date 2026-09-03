@@ -1,0 +1,237 @@
+#!/usr/bin/env python3
+"""work-board — render the sycamore-hq org ledger.
+
+Reads work.json (the record). Prints markdown, JSON, or HTML.
+Never writes the ledger. A missing or broken file is an error, not empty work.
+"""
+
+from __future__ import annotations
+
+import argparse
+import datetime as _datetime
+import html
+import json
+import sys
+from pathlib import Path
+
+DONE = "done"
+ACTIVE = "in_progress"
+TODO = "todo"
+BLOCKED = "blocked"
+PARKED = "parked"
+
+OPEN = frozenset({TODO, ACTIVE})
+CLOSED = frozenset({DONE})
+HELD = frozenset({BLOCKED, PARKED})
+
+ROOT = Path(__file__).resolve().parent.parent
+DEFAULT_LEDGER = ROOT / "work.json"
+
+
+def load_ledger(path: Path) -> dict:
+    """Read and sanity-check the ledger. Action: I/O."""
+    raw = json.loads(path.read_text())
+    if not isinstance(raw, dict) or not isinstance(raw.get("items"), list):
+        raise SystemExit(f"{path}: expected an object with an items array")
+    if not isinstance(raw.get("roster"), list) or not raw["roster"]:
+        raise SystemExit(f"{path}: roster must be a non-empty array")
+    seen = set()
+    for item in raw["items"]:
+        if not isinstance(item, dict) or "id" not in item:
+            raise SystemExit(f"{path}: every item needs an id")
+        if item["id"] in seen:
+            raise SystemExit(f"{path}: duplicate id {item['id']}")
+        seen.add(item["id"])
+    return raw
+
+
+def done_ids(items: list[dict]) -> set[str]:
+    return {i["id"] for i in items if i.get("status") == DONE}
+
+
+def is_startable(item: dict, done: set[str]) -> bool:
+    """Todo, unheld, every blocker already done."""
+    if item.get("status") != TODO:
+        return False
+    if item.get("kind") == PARKED:
+        return False
+    missing = [d for d in (item.get("blocked_by") or []) if d not in done]
+    return not missing
+
+
+def model(ledger: dict, generated: str) -> dict:
+    """Shape the ledger for every renderer. Pure."""
+    items = [i for i in ledger["items"] if isinstance(i, dict)]
+    finished = done_ids(items)
+    counts = {DONE: 0, ACTIVE: 0, TODO: 0, BLOCKED: 0, PARKED: 0}
+    for item in items:
+        status = item.get("status", TODO)
+        counts[status] = counts.get(status, 0) + 1
+    startable = [i for i in items if is_startable(i, finished)]
+    held = [i for i in items if i.get("status") in HELD]
+    in_flight = [i for i in items if i.get("status") == ACTIVE]
+    planned = [
+        i for i in items
+        if i.get("status") == TODO and not is_startable(i, finished)
+    ]
+    return {
+        "roster": list(ledger["roster"]),
+        "updated": ledger.get("updated", ""),
+        "source_as_of": ledger.get("source_as_of", ""),
+        "generated": generated,
+        "items": items,
+        "counts": counts,
+        "startable": startable,
+        "in_flight": in_flight,
+        "held": held,
+        "planned": planned,
+        "board_items": [
+            {"id": i["id"], "title": i["title"], "status": i["status"]}
+            for i in items
+        ],
+    }
+
+
+def render_markdown(m: dict) -> str:
+    c = m["counts"]
+    lines = [
+        f"## sycamore-hq work",
+        f"`{m['generated']}` · ledger {m['updated']} · {m['source_as_of']}",
+        "",
+        f"Roster: {', '.join(m['roster'])}",
+        "",
+        f"| startable | in progress | blocked | parked | todo (held) | done |",
+        f"|---:|---:|---:|---:|---:|---:|",
+        (
+            f"| {len(m['startable'])} | {c.get(ACTIVE, 0)} | "
+            f"{c.get(BLOCKED, 0)} | {c.get(PARKED, 0)} | "
+            f"{c.get(TODO, 0)} | {c.get(DONE, 0)} |"
+        ),
+        "",
+        "### Startable now",
+        "",
+    ]
+    if not m["startable"]:
+        lines.append("_none_")
+    for item in m["startable"]:
+        repos = ", ".join(item.get("repos") or [])
+        lines.append(f"- `{item['id']}` {item['title']} · {repos}")
+    if m["in_flight"]:
+        lines += ["", "### In progress", ""]
+        for item in m["in_flight"]:
+            lines.append(f"- `{item['id']}` {item['title']}")
+    if m["held"]:
+        lines += ["", "### Held", ""]
+        for item in m["held"]:
+            lines.append(
+                f"- `{item['id']}` {item['status']}: {item['title']}"
+            )
+    if m["planned"]:
+        lines += ["", "### Waiting on something", ""]
+        for item in m["planned"]:
+            wait = ", ".join(item.get("blocked_by") or []) or "not startable"
+            lines.append(f"- `{item['id']}` {item['title']} · waiting on {wait}")
+    return "\n".join(lines) + "\n"
+
+
+def render_html(m: dict) -> str:
+    def cards(items: list[dict]) -> str:
+        if not items:
+            return '<p class="text-sm text-stone-500 italic">none</p>'
+        bits = []
+        for item in items:
+            repos = " · ".join(item.get("repos") or [])
+            notes = html.escape(item.get("notes") or "")
+            wait = item.get("blocked_by") or []
+            wait_html = (
+                f'<div class="text-xs text-amber-700/80 mt-1">waiting on '
+                f'{html.escape(", ".join(wait))}</div>'
+                if wait else ""
+            )
+            bits.append(
+                f'<article class="border border-stone-200 rounded-xl p-4 bg-white">'
+                f'<div class="flex justify-between gap-3 items-baseline">'
+                f'<h3 class="font-medium text-stone-900">'
+                f'<span class="font-mono text-xs text-stone-500">{html.escape(item["id"])}</span> '
+                f'{html.escape(item["title"])}</h3>'
+                f'<span class="text-xs font-mono text-stone-500 shrink-0">'
+                f'{html.escape(item.get("status", ""))}</span></div>'
+                f'<div class="text-xs text-stone-500 mt-1">{html.escape(repos)}</div>'
+                f'{wait_html}'
+                f'<p class="text-sm text-stone-600 mt-2">{notes}</p>'
+                f'<div class="text-[11px] font-mono text-stone-400 mt-2">'
+                f'{html.escape(item.get("source") or "")}</div>'
+                f'</article>'
+            )
+        return '<div class="space-y-3">' + "".join(bits) + "</div>"
+
+    c = m["counts"]
+    roster = " · ".join(html.escape(r) for r in m["roster"])
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>sycamore-hq work</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script>tailwind.config={{theme:{{extend:{{fontFamily:{{sans:['Inter','sans-serif'],serif:['Instrument Serif','Georgia','serif'],mono:['IBM Plex Mono','monospace']}}}}}}}}</script>
+</head>
+<body class="bg-[#F3EEE6] text-[#171412] antialiased">
+  <div class="max-w-5xl mx-auto px-6 py-12">
+    <header class="mb-10">
+      <div class="text-xs uppercase tracking-[0.2em] text-stone-500">sycamore-hq</div>
+      <h1 class="font-serif text-5xl mt-1">Work</h1>
+      <p class="mt-3 text-stone-600 max-w-2xl">Outstanding and planned items across every remote. <code class="font-mono text-xs">work.json</code> is the record. This page is a view.</p>
+      <p class="mt-2 text-xs font-mono text-stone-500">{html.escape(m["generated"])} · ledger {html.escape(m["updated"])} · {html.escape(m["source_as_of"])}</p>
+      <p class="mt-1 text-xs text-stone-500">Roster: {roster}</p>
+    </header>
+    <section class="grid grid-cols-2 md:grid-cols-5 gap-3 mb-10">
+      <div class="bg-white border border-stone-200 rounded-2xl p-4"><div class="text-3xl font-semibold tabular-nums">{len(m["startable"])}</div><div class="text-xs text-stone-500 mt-1">startable</div></div>
+      <div class="bg-white border border-stone-200 rounded-2xl p-4"><div class="text-3xl font-semibold tabular-nums text-amber-800">{c.get(ACTIVE, 0)}</div><div class="text-xs text-stone-500 mt-1">in progress</div></div>
+      <div class="bg-white border border-stone-200 rounded-2xl p-4"><div class="text-3xl font-semibold tabular-nums text-red-800">{c.get(BLOCKED, 0)}</div><div class="text-xs text-stone-500 mt-1">blocked</div></div>
+      <div class="bg-white border border-stone-200 rounded-2xl p-4"><div class="text-3xl font-semibold tabular-nums text-stone-500">{c.get(PARKED, 0)}</div><div class="text-xs text-stone-500 mt-1">parked</div></div>
+      <div class="bg-white border border-stone-200 rounded-2xl p-4"><div class="text-3xl font-semibold tabular-nums">{c.get(TODO, 0)}</div><div class="text-xs text-stone-500 mt-1">todo (all)</div></div>
+    </section>
+    <section class="mb-10"><h2 class="text-xs uppercase tracking-widest text-stone-500 mb-3">Startable now</h2>{cards(m["startable"])}</section>
+    <section class="mb-10"><h2 class="text-xs uppercase tracking-widest text-stone-500 mb-3">In progress</h2>{cards(m["in_flight"])}</section>
+    <section class="mb-10"><h2 class="text-xs uppercase tracking-widest text-stone-500 mb-3">Held</h2>{cards(m["held"])}</section>
+    <section class="mb-10"><h2 class="text-xs uppercase tracking-widest text-stone-500 mb-3">Waiting on something</h2>{cards(m["planned"])}</section>
+    <p class="text-xs text-stone-400">Regenerate with <span class="font-mono">just status-html</span>. Do not edit this file by hand.</p>
+  </div>
+</body>
+</html>
+"""
+
+
+def main(argv: list[str] | None = None) -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--ledger", default=str(DEFAULT_LEDGER))
+    parser.add_argument("--markdown", action="store_true")
+    parser.add_argument("--json", action="store_true")
+    parser.add_argument("--html", action="store_true")
+    parser.add_argument("--out", help="HTML destination")
+    args = parser.parse_args(argv)
+
+    generated = _datetime.datetime.now(_datetime.timezone.utc).strftime(
+        "%Y-%m-%d %H:%M UTC"
+    )
+    m = model(load_ledger(Path(args.ledger)), generated)
+
+    if args.json:
+        json.dump({"items": m["board_items"], "roster": m["roster"]}, sys.stdout, indent=2)
+        sys.stdout.write("\n")
+        return 0
+    if args.html or args.out:
+        dest = Path(args.out) if args.out else ROOT / "docs" / "board.html"
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_text(render_html(m))
+        print(f"wrote {dest}", file=sys.stderr)
+        if not args.markdown:
+            return 0
+    sys.stdout.write(render_markdown(m))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
