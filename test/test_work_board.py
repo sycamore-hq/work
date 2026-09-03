@@ -63,7 +63,9 @@ class LedgerShape(unittest.TestCase):
         project = LEDGER["github_project"]
         self.assertEqual(project["owner"], "sycamore-hq")
         self.assertEqual(project["title"], "sycamore-hq work")
-        self.assertIsNone(project["url"])
+        self.assertEqual(
+            project["url"], "https://github.com/orgs/sycamore-hq/projects/2"
+        )
 
 
 class Classification(unittest.TestCase):
