@@ -1,5 +1,8 @@
 # sycamore-hq/work — org ledger
 
+default:
+    @just --list
+
 init:
     echo "work environment ready"
 
