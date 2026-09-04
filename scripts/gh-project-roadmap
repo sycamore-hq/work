@@ -16,10 +16,12 @@ makes the Project and the issues agree with the ledger, never the reverse.
 Needs org project write. cursor[bot] does not have it.
 
     just project-roadmap
+    just project-roadmap --dry-run   # planned label / open-closed changes; no writes
 """
 
 from __future__ import annotations
 
+import argparse
 import datetime as _dt
 import json
 import subprocess
@@ -185,6 +187,8 @@ def lane_of(item: dict, done: set[str]) -> str:
         return "Held"
     if status == "done":
         return "Done"
+    if item.get("kind") == "parked":
+        return "Held"
     missing = [d for d in (item.get("blocked_by") or []) if d not in done]
     if missing:
         return "Waiting"
@@ -200,6 +204,8 @@ def state_label(item: dict, done: set[str]) -> str | None:
         return str(status)
     if status == "done":
         return None
+    if item.get("kind") == "parked":
+        return "parked"
     missing = [d for d in (item.get("blocked_by") or []) if d not in done]
     return "waiting" if missing else "todo"
 
@@ -233,6 +239,31 @@ def is_managed_label(name: str) -> bool:
 def reconcile_labels(current: set[str], desired: set[str]) -> set[str]:
     """Replace every managed label with the desired set; keep the rest. Pure."""
     return {name for name in current if not is_managed_label(name)} | desired
+
+
+def label_lookup_outcome(returncode: int, stdout: str, stderr: str) -> str:
+    """exists | missing | failed. Pure."""
+    if returncode == 0:
+        return "exists"
+    text = (stderr or "") + (stdout or "")
+    return "missing" if "404" in text else "failed"
+
+
+def label_change_line(issue: int, current: set[str], target: set[str]) -> str | None:
+    """`#N labels +a -b`, or None when current already matches. Pure."""
+    if target == current:
+        return None
+    added = ", ".join(f"+{n}" for n in sorted(target - current))
+    removed = ", ".join(f"-{n}" for n in sorted(current - target))
+    return f"#{issue} labels {' '.join(x for x in (added, removed) if x)}"
+
+
+def issue_state_change_line(issue: int, item: dict, current: str) -> str | None:
+    """`#N closed -> open (...)`, or None when current already matches. Pure."""
+    target = desired_issue_state(item)
+    if target == current:
+        return None
+    return f"#{issue} {current} -> {target} ({item['id']} is {item.get('status')})"
 
 
 def depth(item: dict, by_id: dict[str, dict], path: frozenset[str] = frozenset()) -> int:
@@ -283,15 +314,16 @@ def issue_record(number: int) -> IssueRecord:
     return IssueRecord(int(data["id"]), labels, str(data.get("state") or "open"))
 
 
-def sync_issue_state(issue: int, item: dict, current: str) -> None:
+def sync_issue_state(issue: int, item: dict, current: str, *, dry_run: bool = False) -> None:
     """Close done items, reopen everything else. Action."""
-    target = desired_issue_state(item)
-    if target == current:
+    line = issue_state_change_line(issue, item, current)
+    if line is None:
         return
-    body = {"state": target}
-    body["state_reason"] = "completed" if target == "closed" else "reopened"
-    gh_api(f"repos/{REPO}/issues/{issue}", method="PATCH", body=body)
-    print(f"#{issue} {current} -> {target} ({item['id']} is {item.get('status')})", file=sys.stderr)
+    if not dry_run:
+        target = desired_issue_state(item)
+        body = {"state": target, "state_reason": "completed" if target == "closed" else "reopened"}
+        gh_api(f"repos/{REPO}/issues/{issue}", method="PATCH", body=body)
+    print(line, file=sys.stderr)
 
 
 def ensure_label(name: str, known: set[str]) -> None:
@@ -303,7 +335,11 @@ def ensure_label(name: str, known: set[str]) -> None:
         text=True,
         capture_output=True,
     )
-    if proc.returncode != 0:
+    outcome = label_lookup_outcome(proc.returncode, proc.stdout, proc.stderr)
+    if outcome == "failed":
+        sys.stderr.write(proc.stderr or proc.stdout)
+        raise SystemExit(f"read label {name} failed")
+    if outcome == "missing":
         gh_api(
             f"repos/{REPO}/labels",
             method="POST",
@@ -321,17 +357,25 @@ def set_issue_labels(issue: int, labels: set[str]) -> None:
     )
 
 
-def sync_labels(issue: int, item: dict, current: set[str], done: set[str], known: set[str]) -> None:
+def sync_labels(
+    issue: int,
+    item: dict,
+    current: set[str],
+    done: set[str],
+    known: set[str],
+    *,
+    dry_run: bool = False,
+) -> None:
     """Bring one issue's managed labels in line with the ledger. Action."""
     target = reconcile_labels(current, desired_labels(item, done))
-    if target == current:
+    line = label_change_line(issue, current, target)
+    if line is None:
         return
-    for name in sorted(target - current):
-        ensure_label(name, known)
-    set_issue_labels(issue, target)
-    added = ", ".join(f"+{n}" for n in sorted(target - current))
-    removed = ", ".join(f"-{n}" for n in sorted(current - target))
-    print(f"#{issue} labels {' '.join(x for x in (added, removed) if x)}", file=sys.stderr)
+    if not dry_run:
+        for name in sorted(target - current):
+            ensure_label(name, known)
+        set_issue_labels(issue, target)
+    print(line, file=sys.stderr)
 
 
 def list_blocked_by(issue: int) -> set[int]:
@@ -453,11 +497,36 @@ def ensure_view(number: int, name: str, layout: str, *, filter_q: str | None = N
     raise SystemExit(f"create view {name} failed")
 
 
-def main() -> int:
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="print planned label and open/closed changes; write nothing",
+    )
+    return parser.parse_args(argv)
+
+
+def preview_issue_writes(items: list[dict], done: set[str]) -> int:
+    """Print planned label and open/closed changes. Action: GET only."""
+    for item in items:
+        issue = item.get("issue")
+        if not isinstance(issue, int):
+            continue
+        record = issue_record(issue)
+        sync_labels(issue, item, record.labels, done, set(), dry_run=True)
+        sync_issue_state(issue, item, record.state, dry_run=True)
+    return 0
+
+
+def main(argv: list[str] | None = None) -> int:
+    args = parse_args(argv)
     ledger = load_ledger()
     items = [i for i in ledger["items"] if isinstance(i, dict)]
     by_id = {i["id"]: i for i in items}
     done = {i["id"] for i in items if i.get("status") == "done"}
+    if args.dry_run:
+        return preview_issue_writes(items, done)
     today = _dt.datetime.now(_dt.timezone.utc).date()
 
     number = project_number()
