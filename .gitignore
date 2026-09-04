@@ -1,0 +1,3 @@
+# Python bytecode caches from `just test`
+__pycache__/
+*.py[cod]
