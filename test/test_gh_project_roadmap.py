@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Prove the roadmap sync derives labels from the ledger, not by hand."""
 
+import datetime as dt
 import importlib.machinery
 import importlib.util
 import unittest
@@ -123,6 +124,26 @@ class LaneOf(unittest.TestCase):
         self.assertEqual(roadmap.lane_of(item("todo"), set()), "Next")
 
 
+class SequenceDates(unittest.TestCase):
+    def test_parked_kind_todo_gets_no_dates(self):
+        today = dt.date(2026, 9, 4)
+        parked = item("todo", kind="parked")
+        self.assertIsNone(roadmap.sequence_dates(parked, {parked["id"]: parked}, today))
+
+    def test_status_parked_gets_no_dates(self):
+        today = dt.date(2026, 9, 4)
+        parked = item("parked")
+        self.assertIsNone(roadmap.sequence_dates(parked, {parked["id"]: parked}, today))
+
+    def test_unblocked_todo_gets_a_bar(self):
+        today = dt.date(2026, 9, 4)
+        todo = item("todo")
+        self.assertEqual(
+            roadmap.sequence_dates(todo, {todo["id"]: todo}, today),
+            (today, today + dt.timedelta(days=roadmap.SPAN_DAYS)),
+        )
+
+
 class LabelLookup(unittest.TestCase):
     def test_zero_is_exists(self):
         self.assertEqual(roadmap.label_lookup_outcome(0, "{}", ""), "exists")
@@ -159,6 +180,18 @@ class Args(unittest.TestCase):
     def test_dry_run_flag(self):
         self.assertTrue(roadmap.parse_args(["--dry-run"]).dry_run)
         self.assertFalse(roadmap.parse_args([]).dry_run)
+
+    def test_help_keeps_docstring_bullets(self):
+        import io
+        from contextlib import redirect_stdout
+
+        buf = io.StringIO()
+        with self.assertRaises(SystemExit) as cm, redirect_stdout(buf):
+            roadmap.parse_args(["--help"])
+        self.assertEqual(cm.exception.code, 0)
+        help_text = buf.getvalue()
+        self.assertIn("\n- Status (Todo / In Progress / Done)\n", help_text)
+        self.assertIn("\n    just project-roadmap\n", help_text)
 
 
 class IssueState(unittest.TestCase):
