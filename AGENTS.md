@@ -36,3 +36,11 @@ Use catalog skills from a `crossr-skills` checkout when writing or briefing.
 - Startable means `todo`, no unmet `blocked_by`, not parked.
 - Refresh `docs/board.html` after every ledger edit (`just status-html`).
 - A project that cannot be read is unread, never on track. Say so in `notes`.
+
+## Cursor Cloud
+
+Agents started on this repo use `.cursor/environment.json` + `.cursor/Dockerfile`
+(just, Python 3; the just version is the `ARG` at the top of the Dockerfile).
+That file wins over a personal or team dashboard environment. After checkout,
+`install` runs `.cursor/install.sh` (`just init`). Canonical commands stay
+under Ledger rules / the justfile.
