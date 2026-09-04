@@ -16,9 +16,10 @@ status-html:
 project-seed:
     bash scripts/gh-project-seed
 
-# Status, dates, blocked_by, Roadmap + Next views.
-project-roadmap:
-    python3 scripts/gh-project-roadmap
+# Status, dates, blocked_by, labels, issue state, Roadmap + Next views.
+# --dry-run prints planned label and open/closed changes and writes nothing.
+project-roadmap *args:
+    python3 scripts/gh-project-roadmap {{args}}
 
 test:
     python3 -m unittest discover -s test -v
