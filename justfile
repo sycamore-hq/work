@@ -1,5 +1,8 @@
 # sycamore-hq/work — org ledger
 
+init:
+    echo "work environment ready"
+
 status:
     python3 scripts/work-board --markdown
 
