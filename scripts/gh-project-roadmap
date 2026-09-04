@@ -179,16 +179,19 @@ def item_ids_by_issue(number: int) -> dict[int, int]:
     return out
 
 
+def is_held(item: dict) -> bool:
+    """Blocked/parked status or parked kind — Held on the board, no sequence bar."""
+    return item.get("status") in {"blocked", "parked"} or item.get("kind") == "parked"
+
+
 def lane_of(item: dict, done: set[str]) -> str:
     status = item.get("status")
     if status == "in_progress":
         return "In progress"
-    if status in {"blocked", "parked"}:
+    if is_held(item):
         return "Held"
     if status == "done":
         return "Done"
-    if item.get("kind") == "parked":
-        return "Held"
     missing = [d for d in (item.get("blocked_by") or []) if d not in done]
     if missing:
         return "Waiting"
@@ -200,12 +203,10 @@ def state_label(item: dict, done: set[str]) -> str | None:
     status = item.get("status")
     if status == "in_progress":
         return "in-progress"
-    if status in {"blocked", "parked"}:
-        return str(status)
+    if is_held(item):
+        return "parked" if item.get("kind") == "parked" else str(status)
     if status == "done":
         return None
-    if item.get("kind") == "parked":
-        return "parked"
     missing = [d for d in (item.get("blocked_by") or []) if d not in done]
     return "waiting" if missing else "todo"
 
@@ -281,7 +282,7 @@ def depth(item: dict, by_id: dict[str, dict], path: frozenset[str] = frozenset()
 def sequence_dates(
     item: dict, by_id: dict[str, dict], today: _dt.date
 ) -> tuple[_dt.date, _dt.date] | None:
-    if item.get("status") in {"done", "parked", "blocked"}:
+    if item.get("status") == "done" or is_held(item):
         return None
     start = today + _dt.timedelta(days=STRIDE_DAYS * depth(item, by_id))
     return start, start + _dt.timedelta(days=SPAN_DAYS)
@@ -498,7 +499,9 @@ def ensure_view(number: int, name: str, layout: str, *, filter_q: str | None = N
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter
+    )
     parser.add_argument(
         "--dry-run",
         action="store_true",
