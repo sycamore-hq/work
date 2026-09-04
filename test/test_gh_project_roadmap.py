@@ -48,6 +48,9 @@ class StateLabel(unittest.TestCase):
         self.assertEqual(roadmap.state_label(waiting, {"a"}), "waiting")
         self.assertEqual(roadmap.state_label(waiting, {"a", "b"}), "todo")
 
+    def test_parked_kind_todo_is_parked_not_todo(self):
+        self.assertEqual(roadmap.state_label(item("todo", kind="parked"), set()), "parked")
+
 
 class DesiredLabels(unittest.TestCase):
     def test_kind_repos_and_state(self):
@@ -60,6 +63,11 @@ class DesiredLabels(unittest.TestCase):
     def test_parked_kind_and_status_collapse_to_one_label(self):
         got = roadmap.desired_labels(item("parked", kind="parked"), set())
         self.assertEqual(got, {"parked", "repo:crossr-skills"})
+
+    def test_parked_kind_todo_is_one_state_word(self):
+        got = roadmap.desired_labels(item("todo", kind="parked"), set())
+        self.assertEqual(got & roadmap.STATE_LABELS, {"parked"})
+        self.assertNotIn("todo", got)
 
 
 class Reconcile(unittest.TestCase):
@@ -105,6 +113,52 @@ class LedgerWide(unittest.TestCase):
         for entry in ITEMS:
             for name in roadmap.desired_labels(entry, DONE):
                 self.assertTrue(roadmap.is_managed_label(name), f"{entry['id']}: {name}")
+
+
+class LaneOf(unittest.TestCase):
+    def test_parked_kind_todo_is_held(self):
+        self.assertEqual(roadmap.lane_of(item("todo", kind="parked"), set()), "Held")
+
+    def test_unblocked_todo_is_next(self):
+        self.assertEqual(roadmap.lane_of(item("todo"), set()), "Next")
+
+
+class LabelLookup(unittest.TestCase):
+    def test_zero_is_exists(self):
+        self.assertEqual(roadmap.label_lookup_outcome(0, "{}", ""), "exists")
+
+    def test_404_is_missing(self):
+        self.assertEqual(roadmap.label_lookup_outcome(1, "", "HTTP 404"), "missing")
+        self.assertEqual(
+            roadmap.label_lookup_outcome(1, '{"message":"Not Found"}', "gh: 404"),
+            "missing",
+        )
+
+    def test_other_failure_is_failed(self):
+        self.assertEqual(roadmap.label_lookup_outcome(1, "", "HTTP 403"), "failed")
+        self.assertEqual(roadmap.label_lookup_outcome(1, "", "network unreachable"), "failed")
+
+
+class PreviewLines(unittest.TestCase):
+    def test_label_change_line_names_adds_and_drops(self):
+        line = roadmap.label_change_line(17, {"waiting", "planned"}, {"todo", "planned"})
+        self.assertEqual(line, "#17 labels +todo -waiting")
+
+    def test_label_change_line_none_when_equal(self):
+        self.assertIsNone(roadmap.label_change_line(1, {"todo"}, {"todo"}))
+
+    def test_issue_state_change_line_reopen(self):
+        line = roadmap.issue_state_change_line(9, item("in_progress"), "closed")
+        self.assertEqual(line, "#9 closed -> open (x is in_progress)")
+
+    def test_issue_state_change_line_none_when_equal(self):
+        self.assertIsNone(roadmap.issue_state_change_line(2, item("done"), "closed"))
+
+
+class Args(unittest.TestCase):
+    def test_dry_run_flag(self):
+        self.assertTrue(roadmap.parse_args(["--dry-run"]).dry_run)
+        self.assertFalse(roadmap.parse_args([]).dry_run)
 
 
 class IssueState(unittest.TestCase):
