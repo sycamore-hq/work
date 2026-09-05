@@ -20,6 +20,14 @@ https://github.com/orgs/sycamore-hq/projects/2.
 In progress (started 2026-09-03): `loops-lockfile` #9,
 `dashboard-phase` #10, `berea-002` #13, plus `work-00` #15.
 
+`pr5d` #17 started 2026-09-05:
+[crossr-loops#9](https://github.com/sycamore-hq/crossr-loops/pull/9)
+rebase-merged as `6f8e4e6`..`cea6e59`. Tests, `graphs-verify`,
+`verify-protocol`, and `verify-skill-refs` (skills `v1-one-law` at
+`507c509`) green on `cea6e59`. Stays in progress until tag
+`v1-one-law-consumers` peels to `cea6e59`, same rule as `pr5c`. GitHub
+auto-closed #17 on the loops merge; `just project-roadmap` reopens it.
+
 `berea-003` #4 done 2026-09-05: [berea#8](https://github.com/sycamore-hq/berea/pull/8)
 rebase-merged as `ec82658`..`bb4457e`. T020–T090 checked. INDEX:
 `003 done | later | 0/10`. Article VIII amended so a finished spec is later.
@@ -27,7 +35,7 @@ rebase-merged as `ec82658`..`bb4457e`. T020–T090 checked. INDEX:
 `pr5c` #2 done 2026-09-03: crossr-skills#120 rebase-merged as
 `4b8601e`..`507c509`; acceptance greps zero and `harness-validate` green on
 `507c509`; tag `v1-one-law` (`88d9ee2`) peels to `507c509` on the skills
-remote. `pr5d` #17, `pr5e` #18, `landing-rtl` #7 are startable.
+remote. `pr5e` #18 and `landing-rtl` #7 are still startable.
 
 `landing-pages` #3 done 2026-09-05. The host was already Actions-backed.
 The two web-05 deploys on `39084fd` 404'd because Pages was not ready.
@@ -51,7 +59,7 @@ open item), not named ids. A status flip edits the record, not the suite.
 
 Roadmap view is a view of this ledger (`just project-roadmap`): Status, Lane,
 sequence dates, and GitHub issue `blocked_by` edges. Dates are topology, not
-deadlines. Next after the four in-flight items: `pr5-record` #5,
+deadlines. Next after the five in-flight items: `pr5-record` #5,
 `gan-close-4b` #6, `landing-pins` #8.
 
 Plan audit 2026-09-03 against skills `origin/main` `0bd2c40`:
