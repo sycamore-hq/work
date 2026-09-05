@@ -49,11 +49,16 @@ def done_ids(items: list[dict]) -> set[str]:
     return {i["id"] for i in items if i.get("status") == DONE}
 
 
+def is_held(item: dict) -> bool:
+    """Blocked/parked status or parked kind. Same predicate as gh-project-roadmap."""
+    return item.get("status") in HELD or item.get("kind") == PARKED
+
+
 def is_startable(item: dict, done: set[str]) -> bool:
     """Todo, unheld, every blocker already done."""
     if item.get("status") != TODO:
         return False
-    if item.get("kind") == PARKED:
+    if is_held(item):
         return False
     missing = [d for d in (item.get("blocked_by") or []) if d not in done]
     return not missing
@@ -68,11 +73,11 @@ def model(ledger: dict, generated: str) -> dict:
         status = item.get("status", TODO)
         counts[status] = counts.get(status, 0) + 1
     startable = [i for i in items if is_startable(i, finished)]
-    held = [i for i in items if i.get("status") in HELD]
+    held = [i for i in items if is_held(i)]
     in_flight = [i for i in items if i.get("status") == ACTIVE]
     planned = [
         i for i in items
-        if i.get("status") == TODO and not is_startable(i, finished)
+        if i.get("status") == TODO and not is_held(i) and not is_startable(i, finished)
     ]
     return {
         "roster": list(ledger["roster"]),
@@ -100,7 +105,7 @@ def render_markdown(m: dict) -> str:
         "",
         f"Roster: {', '.join(m['roster'])}",
         "",
-        f"| startable | in progress | blocked | parked | todo (held) | done |",
+        f"| startable | in progress | blocked | parked | todo (all) | done |",
         f"|---:|---:|---:|---:|---:|---:|",
         (
             f"| {len(m['startable'])} | {c.get(ACTIVE, 0)} | "
