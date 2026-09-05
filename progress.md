@@ -20,6 +20,10 @@ https://github.com/orgs/sycamore-hq/projects/2.
 In progress (started 2026-09-03): `loops-lockfile` #9,
 `dashboard-phase` #10, `berea-002` #13, plus `work-00` #15.
 
+`berea-003` #4 done 2026-09-05: [berea#8](https://github.com/sycamore-hq/berea/pull/8)
+rebase-merged as `ec82658`..`bb4457e`. T020–T090 checked. INDEX:
+`003 done | later | 0/10`. Article VIII amended so a finished spec is later.
+
 `pr5c` #2 done 2026-09-03: crossr-skills#120 rebase-merged as
 `4b8601e`..`507c509`; acceptance greps zero and `harness-validate` green on
 `507c509`; tag `v1-one-law` (`88d9ee2`) peels to `507c509` on the skills

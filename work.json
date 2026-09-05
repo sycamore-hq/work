@@ -1,6 +1,6 @@
 {
   "updated": "2026-09-05",
-  "source_as_of": "landing Pages live after deploy 33996527031, 2026-09-05 22:39 UTC",
+  "source_as_of": "berea#8 rebase-merged as ec82658..bb4457e, 2026-09-05 23:20 UTC",
   "github_project": {
     "owner": "sycamore-hq",
     "title": "sycamore-hq work",
@@ -47,12 +47,12 @@
       "id": "berea-003",
       "issue": 4,
       "title": "berea 003-harness-and-hygiene (CI + hygiene)",
-      "status": "blocked",
+      "status": "done",
       "kind": "outstanding",
       "repos": ["berea"],
       "source": "berea/specs/INDEX.md · specs/003-harness-and-hygiene/tasks.md",
       "blocked_by": [],
-      "notes": "INDEX: blocked, horizon now, 8/10. Next named task T020 is CI (dune build @melange, git diff --exit-code, bun run check). T000 and T010 are done."
+      "notes": "Done 2026-09-05. sycamore-hq/berea#8 rebase-merged as ec82658..bb4457e. T020–T090 checked. INDEX: 003 done | later | 0/10. Article VIII amended so a finished spec is later. CI check green on bb4457e."
     },
     {
       "id": "pr5-record",
