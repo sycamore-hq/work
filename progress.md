@@ -25,6 +25,13 @@ In progress (started 2026-09-03): `loops-lockfile` #9,
 `507c509`; tag `v1-one-law` (`88d9ee2`) peels to `507c509` on the skills
 remote. `pr5d` #17, `pr5e` #18, `landing-rtl` #7 are startable.
 
+`landing-pages` #3 done 2026-09-05. The host was already Actions-backed.
+The two web-05 deploys on `39084fd` 404'd because Pages was not ready.
+Re-ran Deploy CrossR door
+([33996527031](https://github.com/sycamore-hq/crossr-web-landing/actions/runs/33996527031)).
+https://sycamore-hq.github.io/crossr-web-landing/ and `/docs/` return 200.
+The skills stub can keep pointing there.
+
 `just project-roadmap` now owns issue labels and open/closed state too.
 Labels: kind, `repo:<name>` per repo, one state word (`todo` / `waiting` /
 `in-progress` / `blocked` / `parked`; done carries none). State: done
@@ -40,13 +47,13 @@ open item), not named ids. A status flip edits the record, not the suite.
 
 Roadmap view is a view of this ledger (`just project-roadmap`): Status, Lane,
 sequence dates, and GitHub issue `blocked_by` edges. Dates are topology, not
-deadlines. Next after the four in-flight items: `landing-pages` #3,
-`pr5-record` #5, `gan-close-4b` #6, `landing-pins` #8.
+deadlines. Next after the four in-flight items: `pr5-record` #5,
+`gan-close-4b` #6, `landing-pins` #8.
 
 Plan audit 2026-09-03 against skills `origin/main` `0bd2c40`:
 
-- Split plan: complete. Leftovers already on the board (`landing-pages`,
-  `graph-runner`). Custom domain is a decision, not a card.
+- Split plan: complete. Leftover `landing-pages` is done. `graph-runner`
+  stays parked. Custom domain is a decision, not a card.
 - Mitchell contract: landed (`mitchell-decomposition` completed). Not a card.
 - GAN PR 0–4: landed. Close-out is `gan-close-4b`.
 - PR 5 is the 7-PR prompt-set stack. 5a/5b/5c on main. Board now names 5c–5g
