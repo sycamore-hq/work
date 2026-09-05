@@ -20,13 +20,12 @@ https://github.com/orgs/sycamore-hq/projects/2.
 In progress (started 2026-09-03): `loops-lockfile` #9,
 `dashboard-phase` #10, `berea-002` #13, plus `work-00` #15.
 
-`pr5d` #17 started 2026-09-05:
+`pr5d` #17 done 2026-09-05:
 [crossr-loops#9](https://github.com/sycamore-hq/crossr-loops/pull/9)
 rebase-merged as `6f8e4e6`..`cea6e59`. Tests, `graphs-verify`,
 `verify-protocol`, and `verify-skill-refs` (skills `v1-one-law` at
-`507c509`) green on `cea6e59`. Stays in progress until tag
-`v1-one-law-consumers` peels to `cea6e59`, same rule as `pr5c`. GitHub
-auto-closed #17 on the loops merge; `just project-roadmap` reopens it.
+`507c509`) green on `cea6e59`. Tag `v1-one-law-consumers` (`69a05d2`)
+peels to `cea6e59` on the loops remote. `pr5f` #19 waits on `pr5e` alone.
 
 `berea-003` #4 done 2026-09-05: [berea#8](https://github.com/sycamore-hq/berea/pull/8)
 rebase-merged as `ec82658`..`bb4457e`. T020–T090 checked. INDEX:
@@ -59,7 +58,7 @@ open item), not named ids. A status flip edits the record, not the suite.
 
 Roadmap view is a view of this ledger (`just project-roadmap`): Status, Lane,
 sequence dates, and GitHub issue `blocked_by` edges. Dates are topology, not
-deadlines. Next after the five in-flight items: `pr5-record` #5,
+deadlines. Next after the four in-flight items: `pr5-record` #5,
 `gan-close-4b` #6, `landing-pins` #8.
 
 Plan audit 2026-09-03 against skills `origin/main` `0bd2c40`:
