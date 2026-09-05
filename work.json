@@ -1,6 +1,6 @@
 {
-  "updated": "2026-09-03",
-  "source_as_of": "origin/main after fetch, 2026-09-03 22:40 UTC",
+  "updated": "2026-09-05",
+  "source_as_of": "landing Pages live after deploy 33996527031, 2026-09-05 22:39 UTC",
   "github_project": {
     "owner": "sycamore-hq",
     "title": "sycamore-hq work",
@@ -36,12 +36,12 @@
       "id": "landing-pages",
       "issue": 3,
       "title": "Turn landing Pages on, or stop pointing at the 404",
-      "status": "todo",
+      "status": "done",
       "kind": "outstanding",
       "repos": ["crossr-web-landing", "crossr-skills"],
-      "source": "curl https://sycamore-hq.github.io/crossr-web-landing/ → 404; skills stub meta-refreshes there",
+      "source": "curl https://sycamore-hq.github.io/crossr-web-landing/ → 200; skills stub meta-refreshes there",
       "blocked_by": [],
-      "notes": "web-05 workflow is in the tree (39084fd, 2026-08-29). Skills Pages is a live 'moved' stub. The destination is dead."
+      "notes": "Done 2026-09-05. Pages was already Actions-backed. The two web-05 runs on 39084fd 404'd because the host did not exist yet. Re-ran Deploy CrossR door (33996527031). curl of / and /docs/ is 200. Skills stub can keep the meta-refresh."
     },
     {
       "id": "berea-003",
@@ -85,7 +85,7 @@
       "repos": ["crossr-web-landing"],
       "source": "crossr-skills/docs/plans/pr5-one-law-prompt-set.md 5g",
       "blocked_by": ["pr5c"],
-      "notes": "Rider after 5c. site/templates/index.html :222, :230, :259-260, :287. Harmless while the host 404s."
+      "notes": "Rider after 5c. site/templates/index.html :222, :230, :259-260, :287. Host is live as of landing-pages; this stale copy is now public."
     },
     {
       "id": "landing-pins",
