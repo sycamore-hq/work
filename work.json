@@ -1,6 +1,6 @@
 {
   "updated": "2026-09-05",
-  "source_as_of": "crossr-loops#9 rebase-merged as 6f8e4e6..cea6e59, 2026-09-05 23:30 UTC",
+  "source_as_of": "loops tag v1-one-law-consumers (69a05d2) peels to cea6e59, 2026-09-05 23:54 UTC",
   "github_project": {
     "owner": "sycamore-hq",
     "title": "sycamore-hq work",
@@ -124,12 +124,12 @@
       "id": "pr5d",
       "issue": 17,
       "title": "PR 5d: loops pin, neutral code-gan, requires.book",
-      "status": "in_progress",
+      "status": "done",
       "kind": "planned",
       "repos": ["crossr-loops"],
       "source": "crossr-skills/docs/plans/pr5-one-law-prompt-set.md 5d",
       "blocked_by": ["pr5c"],
-      "notes": "In flight 2026-09-05. crossr-loops#9 rebase-merged as 6f8e4e6..cea6e59: skills=v1-one-law pin; code-gan names no language; requires.book in schema + verifier. Tests, graphs-verify, verify-protocol, verify-skill-refs (skills v1-one-law at 507c509) green on cea6e59. Done when tag v1-one-law-consumers peels to cea6e59; not cut yet."
+      "notes": "Done 2026-09-05. crossr-loops#9 rebase-merged as 6f8e4e6..cea6e59: skills=v1-one-law pin; code-gan names no language; requires.book in schema + verifier. Tests, graphs-verify, verify-protocol, verify-skill-refs (skills v1-one-law at 507c509) green on cea6e59. Tag v1-one-law-consumers (69a05d2) peels to cea6e59 on the loops remote. pr5f now waits on pr5e alone."
     },
     {
       "id": "pr5e",
