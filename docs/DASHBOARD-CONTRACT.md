@@ -19,7 +19,7 @@ SOURCES OF TRUTH (read-only; the dashboard renders these, it never replaces them
   Narrative log  = progress.md
   Status words   = done = done, completed
                    active = in_progress
-                   held as themselves: blocked, parked
+                   held as themselves: blocked, parked (or kind parked)
                    everything else counts as todo
   Startable      = status todo, kind not parked, every blocked_by id is done
 

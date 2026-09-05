@@ -141,18 +141,22 @@ class Classification(unittest.TestCase):
         }
         self.assertEqual(ids(MODEL["startable"]), expected)
 
-    def test_waiting_items_have_an_unmet_blocker_or_are_parked(self):
+    def test_waiting_items_have_an_unmet_blocker(self):
         done = ids([i for i in ITEMS if i["status"] == work_board.DONE])
         for item in MODEL["planned"]:
             self.assertEqual(item["status"], work_board.TODO, item["id"])
-            unmet = set(blockers(item)) - done
+            self.assertFalse(work_board.is_held(item), item["id"])
             self.assertTrue(
-                unmet or item.get("kind") == work_board.PARKED,
-                f"{item['id']} is waiting on nothing",
+                set(blockers(item)) - done, f"{item['id']} is waiting on nothing"
             )
 
-    def test_startable_and_waiting_partition_todo(self):
-        todo = ids([i for i in ITEMS if i["status"] == work_board.TODO])
+    def test_startable_and_waiting_partition_unheld_todo(self):
+        todo = ids(
+            [
+                i for i in ITEMS
+                if i["status"] == work_board.TODO and not work_board.is_held(i)
+            ]
+        )
         startable = ids(MODEL["startable"])
         waiting = ids(MODEL["planned"])
         self.assertEqual(startable & waiting, set())
@@ -164,11 +168,35 @@ class Classification(unittest.TestCase):
             ids([i for i in ITEMS if i["status"] == work_board.ACTIVE]),
         )
 
-    def test_held_is_exactly_blocked_or_parked(self):
+    def test_held_is_exactly_blocked_parked_or_parked_kind(self):
         self.assertEqual(
             ids(MODEL["held"]),
-            ids([i for i in ITEMS if i["status"] in work_board.HELD]),
+            ids(
+                [
+                    i for i in ITEMS
+                    if i["status"] in work_board.HELD
+                    or i.get("kind") == work_board.PARKED
+                ]
+            ),
         )
+
+    def test_both_views_hold_a_parked_kind_todo(self):
+        """A todo with kind parked lands in Held on the board and the Project."""
+        item = {
+            "id": "x",
+            "title": "x",
+            "status": work_board.TODO,
+            "kind": work_board.PARKED,
+            "repos": ["work"],
+        }
+        ledger = {"roster": ["work"], "items": [item]}
+        m = work_board.model(ledger, "test")
+        self.assertEqual(ids(m["held"]), {"x"})
+        self.assertEqual(m["startable"], [])
+        self.assertEqual(m["planned"], [])
+        self.assertEqual(roadmap.lane_of(item, set()), "Held")
+        self.assertIn("### Held", work_board.render_markdown(m))
+        self.assertNotIn("Waiting on something", work_board.render_markdown(m))
 
     def test_lanes_cover_every_open_item_once(self):
         lanes = [
