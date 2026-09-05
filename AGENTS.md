@@ -23,7 +23,6 @@ Do not copy skill text, loop law, or the harness spec into this tree.
 Use catalog skills from a `crossr-skills` checkout when writing or briefing.
 
 - `code-writer`
-- `chief-of-staff` (read this ledger per project via `--root`)
 - `voice-dna` for anything a human reads
 
 ## Ledger rules

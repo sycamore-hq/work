@@ -422,7 +422,7 @@ def add_blocked_by(issue: int, blocker_id: int) -> None:
     if proc.returncode == 0:
         return
     text = (proc.stderr or "") + (proc.stdout or "")
-    if "already" in text.lower() or "already been taken" in text.lower() or "422" in text:
+    if "already" in text.lower():
         return
     sys.stderr.write(text)
     raise SystemExit(f"blocked_by #{issue} <- {blocker_id} failed")

@@ -27,7 +27,8 @@ their trackers currently hide.
 just status        # markdown
 just status-html   # docs/board.html
 just project-seed     # create/reuse the org GitHub Project (needs org project write)
-just project-roadmap  # Status, dates, blocked_by, Roadmap + Next views
+just project-roadmap  # Status, Lane, dates, blocked_by, labels, open/closed, Roadmap + Next views
+just project-roadmap --dry-run  # print planned label / open-closed changes, write nothing
 just test
 just check
 ```
@@ -46,5 +47,9 @@ Issues [#2](https://github.com/sycamore-hq/work/issues/2)–[#19](https://github
 `just project-seed` creates or reuses that board (see
 [`scripts/gh-project-seed`](scripts/gh-project-seed)). `just project-roadmap`
 sets Status, Lane, sequence dates, and issue dependencies so the Project
-Roadmap and Next views show what is outstanding and what waits on what.
+Roadmap and Next views show what is outstanding and what waits on what. It
+also rewrites each issue's managed labels (kind, `repo:<name>`, one state
+word) and its open/closed state (done closes, anything else reopens) from
+the ledger. `just project-roadmap --dry-run` prints the planned label and
+open/closed changes and writes nothing.
 `gh-project` is done.
