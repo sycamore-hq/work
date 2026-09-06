@@ -19,6 +19,7 @@ https://github.com/orgs/sycamore-hq/projects/2.
 
 In progress (started 2026-09-03): `loops-lockfile` #9,
 `dashboard-phase` #10, `berea-002` #13, plus `work-00` #15.
+Landing work started 2026-09-06: `landing-rtl` #7 and `landing-pins` #8.
 
 `pr5d` #17 done 2026-09-05:
 [crossr-loops#9](https://github.com/sycamore-hq/crossr-loops/pull/9)
@@ -34,7 +35,18 @@ rebase-merged as `ec82658`..`bb4457e`. T020–T090 checked. INDEX:
 `pr5c` #2 done 2026-09-03: crossr-skills#120 rebase-merged as
 `4b8601e`..`507c509`; acceptance greps zero and `harness-validate` green on
 `507c509`; tag `v1-one-law` (`88d9ee2`) peels to `507c509` on the skills
-remote. `pr5e` #18 and `landing-rtl` #7 are still startable.
+remote. `pr5e` #18 is still startable.
+
+`landing-rtl` #7 in progress 2026-09-06:
+[crossr-web-landing#10](https://github.com/sycamore-hq/crossr-web-landing/pull/10)
+(`158ae88`). Live-copy tests first. Door HTML drops rust-team-lead,
+retargets featured pills to decision 7, and names harness-main pins.
+Check workflow added.
+
+`landing-pins` #8 in progress 2026-09-06:
+[crossr-web-landing#11](https://github.com/sycamore-hq/crossr-web-landing/pull/11)
+stacked on #10 (`a731c59`). README and book bootstrap.md name
+`v1-gan-layers` / `v1-cards`. Charter freeze still names v0.
 
 `landing-pages` #3 done 2026-09-05. The host was already Actions-backed.
 The two web-05 deploys on `39084fd` 404'd because Pages was not ready.
@@ -58,8 +70,8 @@ open item), not named ids. A status flip edits the record, not the suite.
 
 Roadmap view is a view of this ledger (`just project-roadmap`): Status, Lane,
 sequence dates, and GitHub issue `blocked_by` edges. Dates are topology, not
-deadlines. Next after the four in-flight items: `pr5-record` #5,
-`gan-close-4b` #6, `landing-pins` #8.
+deadlines. Next after the in-flight items: `pr5-record` #5,
+`gan-close-4b` #6, `pr5e` #18.
 
 Plan audit 2026-09-03 against skills `origin/main` `0bd2c40`:
 
