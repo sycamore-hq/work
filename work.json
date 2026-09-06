@@ -1,6 +1,6 @@
 {
   "updated": "2026-09-06",
-  "source_as_of": "crossr-skills#124 merged as 6c5476e, 2026-09-06 06:41 UTC",
+  "source_as_of": "pr6 landed: skills#125, loops#11, harness#10, 2026-09-06",
   "github_project": {
     "owner": "sycamore-hq",
     "title": "sycamore-hq work",
@@ -157,12 +157,12 @@
       "id": "pr6",
       "issue": 11,
       "title": "PR 6: plan-writer + plan-first GAN",
-      "status": "todo",
+      "status": "done",
       "kind": "planned",
       "repos": ["crossr-loops", "crossr-skills", "crossr-harness"],
       "source": "crossr-skills/docs/plans/gan-layer-separation-plan.md §4 PR 6",
       "blocked_by": ["pr5f"],
-      "notes": "plan-writer is a skill, not a persona (decision #11). Architect moves to plan time. pr5f landed; this is startable."
+      "notes": "Done 2026-09-06. skills#125 rebase-merged as 306ea92..f4783ad. loops#11 rebase-merged as 7da1db6..5448096. harness#10 rebase-merged as efd49e5..1d60943. plan-writer is a skill, not a persona (decision #11). Architect at plan time. Consumer pins still v1-one-law / v1-one-law-consumers. pr7 is startable."
     },
     {
       "id": "pr7",
@@ -173,7 +173,7 @@
       "repos": ["crossr-loops", "crossr-skills"],
       "source": "crossr-skills/docs/plans/gan-layer-separation-plan.md §4 PR 7",
       "blocked_by": ["pr6"],
-      "notes": "Per-item BLESS tokens. No blanket BLESS over a set."
+      "notes": "Per-item BLESS tokens. No blanket BLESS over a set. pr6 landed; this is startable."
     },
     {
       "id": "berea-002",
