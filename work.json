@@ -1,6 +1,6 @@
 {
-  "updated": "2026-09-05",
-  "source_as_of": "loops tag v1-one-law-consumers (69a05d2) peels to cea6e59, 2026-09-05 23:54 UTC",
+  "updated": "2026-09-06",
+  "source_as_of": "landing-rtl #10 and landing-pins #11 open on crossr-web-landing, 2026-09-06",
   "github_project": {
     "owner": "sycamore-hq",
     "title": "sycamore-hq work",
@@ -80,23 +80,23 @@
       "id": "landing-rtl",
       "issue": 7,
       "title": "PR 5g: drop rust-team-lead and retired names from landing",
-      "status": "todo",
+      "status": "in_progress",
       "kind": "hygiene",
       "repos": ["crossr-web-landing"],
       "source": "crossr-skills/docs/plans/pr5-one-law-prompt-set.md 5g",
       "blocked_by": ["pr5c"],
-      "notes": "Rider after 5c. site/templates/index.html :222, :230, :259-260, :287. Host is live as of landing-pages; this stale copy is now public."
+      "notes": "In progress 2026-09-06. crossr-web-landing#10 (cursor/landing-rtl-edf9) 158ae88. Live-copy tests first; door HTML retargeted. Featured pills are decision 7. Pins on the door are v1-gan-layers / v1-cards. Check workflow added. Not done until that PR merges."
     },
     {
       "id": "landing-pins",
       "issue": 8,
       "title": "Landing README still lists v0 pins",
-      "status": "todo",
+      "status": "in_progress",
       "kind": "hygiene",
       "repos": ["crossr-web-landing"],
       "source": "crossr-web-landing/README.md sibling list",
       "blocked_by": [],
-      "notes": "Consumers are skills=v1-gan-layers, loops=v1-cards. Charter freeze still names v0."
+      "notes": "In progress 2026-09-06. crossr-web-landing#11 stacked on #10 (cursor/landing-pins-edf9) a731c59. README sibling list and book bootstrap.md name v1-gan-layers / v1-cards. Charter freeze and MIGRATION.md still name v0 on purpose. Not done until that PR merges."
     },
     {
       "id": "loops-lockfile",
