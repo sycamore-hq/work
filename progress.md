@@ -17,8 +17,25 @@ Roster read 2026-09-03 from origin after fetch:
 Issues #2–#19 are the Project cards. Project
 https://github.com/orgs/sycamore-hq/projects/2.
 
-In progress (started 2026-09-03): `loops-lockfile` #9,
-`dashboard-phase` #10, plus `work-00` #15.
+In progress (started 2026-09-03): `work-00` #15.
+
+`gan-close-4b` #6 done 2026-09-06.
+[crossr-loops#10](https://github.com/sycamore-hq/crossr-loops/pull/10)
+rebase-merged as `2764138`..`5f31cd8`.
+[crossr-harness#9](https://github.com/sycamore-hq/crossr-harness/pull/9)
+rebase-merged as `310f0ff`..`c974c8b`. Phase is `completed` on those two.
+Skills 0–4b children were already done. The phase stays open there
+because PR 5 continues (`pr5-record` #5 / skills#123).
+
+`dashboard-phase` #10 done 2026-09-04.
+[crossr-harness#7](https://github.com/sycamore-hq/crossr-harness/pull/7)
+rebase-merged as `66bb380`..`9b2ee5a`. `feature_units()` counts a leftover
+`in_progress` phase. That was the generator bug. Closing the phase is #6.
+
+`loops-lockfile` #9 done 2026-09-06. The loops work landed 2026-09-03:
+[crossr-loops#8](https://github.com/sycamore-hq/crossr-loops/pull/8)
+rebase-merged as `d9679e1`..`f4b5ba3`. Consumer pin, same contract as
+harness and skills. `lockfile.toml` is `loops = "v1-cards"`.
 
 `berea-002` #13 done 2026-09-06: [berea#9](https://github.com/sycamore-hq/berea/pull/9)
 rebase-merged as `f62e1d6`..`f03473e`. Reviewed is deny-closed. INDEX:
@@ -83,14 +100,14 @@ open item), not named ids. A status flip edits the record, not the suite.
 Roadmap view is a view of this ledger (`just project-roadmap`): Status, Lane,
 sequence dates, and GitHub issue `blocked_by` edges. Dates are topology, not
 deadlines. Next after the in-flight items: `pr5-record` #5,
-`gan-close-4b` #6, `pr5f` #19.
+`pr5f` #19.
 
 Plan audit 2026-09-03 against skills `origin/main` `0bd2c40`:
 
 - Split plan: complete. Leftover `landing-pages` is done. `graph-runner`
   stays parked. Custom domain is a decision, not a card.
 - Mitchell contract: landed (`mitchell-decomposition` completed). Not a card.
-- GAN PR 0–4: landed. Close-out is `gan-close-4b`.
+- GAN PR 0–4: landed. Close-out `gan-close-4b` is done on loops and harness.
 - PR 5 is the 7-PR prompt-set stack. 5a/5b/5c/5d/5e/5g on main. Board
   still names `pr5f` #19. `pr5-record` is the overdue 5a/5b tracker note.
 - PR 6 waits on `pr5f`. PR 7 waits on PR 6.
@@ -98,5 +115,5 @@ Plan audit 2026-09-03 against skills `origin/main` `0bd2c40`:
 
 ## Verification Status
 
-- `python3 -m unittest discover -s test -v` (run before merge)
-- `just status` prints startable items from the ledger
+- `python3 -m unittest discover -s test -v` — 60 tests OK
+- `python3 scripts/work-board --markdown` — startable 2 (`pr5-record`, `pr5f`), in progress 1 (`work-00`)
