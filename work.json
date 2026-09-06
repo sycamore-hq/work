@@ -1,6 +1,6 @@
 {
   "updated": "2026-09-06",
-  "source_as_of": "crossr-harness#8 rebase-merged as 274e315..0159561, 2026-09-06 05:16 UTC",
+  "source_as_of": "berea#9 rebase-merged as f62e1d6..f03473e, 2026-09-06 05:48 UTC",
   "github_project": {
     "owner": "sycamore-hq",
     "title": "sycamore-hq work",
@@ -179,12 +179,12 @@
       "id": "berea-002",
       "issue": 13,
       "title": "berea 002-memory-notes",
-      "status": "in_progress",
+      "status": "done",
       "kind": "planned",
       "repos": ["berea"],
       "source": "berea/specs/INDEX.md",
       "blocked_by": [],
-      "notes": "Status specified, horizon next. Started 2026-09-03."
+      "notes": "Done 2026-09-06. sycamore-hq/berea#9 rebase-merged as f62e1d6..f03473e. Reviewed is deny-closed. INDEX: 002-memory-notes | done | later | 0/4. bun run check + CI green on f03473e."
     },
     {
       "id": "graph-runner",
