@@ -19,7 +19,6 @@ https://github.com/orgs/sycamore-hq/projects/2.
 
 In progress (started 2026-09-03): `loops-lockfile` #9,
 `dashboard-phase` #10, `berea-002` #13, plus `work-00` #15.
-Landing work started 2026-09-06: `landing-rtl` #7 and `landing-pins` #8.
 
 `pr5d` #17 done 2026-09-05:
 [crossr-loops#9](https://github.com/sycamore-hq/crossr-loops/pull/9)
@@ -37,16 +36,17 @@ rebase-merged as `ec82658`..`bb4457e`. T020–T090 checked. INDEX:
 `507c509`; tag `v1-one-law` (`88d9ee2`) peels to `507c509` on the skills
 remote. `pr5e` #18 is still startable.
 
-`landing-rtl` #7 in progress 2026-09-06:
+`landing-rtl` #7 done 2026-09-06:
 [crossr-web-landing#10](https://github.com/sycamore-hq/crossr-web-landing/pull/10)
-(`158ae88`). Live-copy tests first. Door HTML drops rust-team-lead,
-retargets featured pills to decision 7, and names harness-main pins.
-Check workflow added.
+rebase-merged as `08a65f9`..`211a704`. Live-copy tests first. Door
+HTML drops rust-team-lead, featured pills are decision 7, pins on the
+door are `v1-gan-layers` / `v1-cards`. Check green on `211a704`.
 
-`landing-pins` #8 in progress 2026-09-06:
+`landing-pins` #8 done 2026-09-06:
 [crossr-web-landing#11](https://github.com/sycamore-hq/crossr-web-landing/pull/11)
-stacked on #10 (`a731c59`). README and book bootstrap.md name
-`v1-gan-layers` / `v1-cards`. Charter freeze still names v0.
+rebase-merged as `feb9f0a`..`1002175`. README and book bootstrap.md
+name `v1-gan-layers` / `v1-cards`. Graphs are in `v1-cards`. Charter
+freeze still names v0. Check green on `1002175`.
 
 `landing-pages` #3 done 2026-09-05. The host was already Actions-backed.
 The two web-05 deploys on `39084fd` 404'd because Pages was not ready.
@@ -79,9 +79,9 @@ Plan audit 2026-09-03 against skills `origin/main` `0bd2c40`:
   stays parked. Custom domain is a decision, not a card.
 - Mitchell contract: landed (`mitchell-decomposition` completed). Not a card.
 - GAN PR 0–4: landed. Close-out is `gan-close-4b`.
-- PR 5 is the 7-PR prompt-set stack. 5a/5b/5c on main. Board now names 5c–5g
-  (`pr5c`, `pr5d` #17, `pr5e` #18, `pr5f` #19, `landing-rtl` 5g). `pr5-record`
-  is the overdue 5a/5b tracker note.
+- PR 5 is the 7-PR prompt-set stack. 5a/5b/5c/5g on main (`landing-rtl`
+  #7, `landing-pins` #8). Board still names `pr5e` #18 and `pr5f` #19.
+  `pr5-record` is the overdue 5a/5b tracker note.
 - PR 6 waits on `pr5f`. PR 7 waits on PR 6.
 - GAN §5 "also worth doing" is not a named unit. Not on the board.
 

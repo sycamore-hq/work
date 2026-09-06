@@ -1,6 +1,6 @@
 {
   "updated": "2026-09-06",
-  "source_as_of": "landing-rtl #10 and landing-pins #11 open on crossr-web-landing, 2026-09-06",
+  "source_as_of": "landing-rtl #10 and landing-pins #11 rebase-merged on crossr-web-landing, 2026-09-06",
   "github_project": {
     "owner": "sycamore-hq",
     "title": "sycamore-hq work",
@@ -80,23 +80,23 @@
       "id": "landing-rtl",
       "issue": 7,
       "title": "PR 5g: drop rust-team-lead and retired names from landing",
-      "status": "in_progress",
+      "status": "done",
       "kind": "hygiene",
       "repos": ["crossr-web-landing"],
       "source": "crossr-skills/docs/plans/pr5-one-law-prompt-set.md 5g",
       "blocked_by": ["pr5c"],
-      "notes": "In progress 2026-09-06. crossr-web-landing#10 (cursor/landing-rtl-edf9) 158ae88. Live-copy tests first; door HTML retargeted. Featured pills are decision 7. Pins on the door are v1-gan-layers / v1-cards. Check workflow added. Not done until that PR merges."
+      "notes": "Done 2026-09-06. crossr-web-landing#10 rebase-merged as 08a65f9..211a704. Live-copy tests first; door HTML drops rust-team-lead; featured pills are decision 7; pins on the door are v1-gan-layers / v1-cards. Check workflow added. Check green on 211a704."
     },
     {
       "id": "landing-pins",
       "issue": 8,
       "title": "Landing README still lists v0 pins",
-      "status": "in_progress",
+      "status": "done",
       "kind": "hygiene",
       "repos": ["crossr-web-landing"],
       "source": "crossr-web-landing/README.md sibling list",
       "blocked_by": [],
-      "notes": "In progress 2026-09-06. crossr-web-landing#11 stacked on #10 (cursor/landing-pins-edf9) a731c59. README sibling list and book bootstrap.md name v1-gan-layers / v1-cards. Charter freeze and MIGRATION.md still name v0 on purpose. Not done until that PR merges."
+      "notes": "Done 2026-09-06. crossr-web-landing#11 rebase-merged as feb9f0a..1002175. README sibling list and book bootstrap.md name v1-gan-layers / v1-cards. Graphs are in v1-cards. Charter freeze and MIGRATION.md still name v0 on purpose. Check green on 1002175."
     },
     {
       "id": "loops-lockfile",
