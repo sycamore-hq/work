@@ -1,6 +1,6 @@
 {
   "updated": "2026-09-06",
-  "source_as_of": "crossr-harness#9 rebase-merged as 310f0ff..c974c8b, 2026-09-06 06:18 UTC",
+  "source_as_of": "crossr-skills#123 rebase-merged as 3f236dc..e3434f1, 2026-09-06 06:25 UTC",
   "github_project": {
     "owner": "sycamore-hq",
     "title": "sycamore-hq work",
@@ -58,12 +58,12 @@
       "id": "pr5-record",
       "issue": 5,
       "title": "Record 5a/5b on the skills tracker and plan header",
-      "status": "todo",
+      "status": "done",
       "kind": "hygiene",
       "repos": ["crossr-skills"],
-      "source": "features.json + progress.md + gan-layer-separation-plan.md status + pr5-one-law-prompt-set.md vs origin/main 0bd2c40",
+      "source": "features.json + progress.md + gan-layer-separation-plan.md status + pr5-one-law-prompt-set.md vs origin/main e3434f1",
       "blocked_by": [],
-      "notes": "Books are on main (5a #117, 5b #118). Tracker and gan-layer-separation-plan still stop at PR 4. Prompt set still says 5b in flight. Distinct from pr5f, which closes the whole PR 5 stack."
+      "notes": "Done 2026-09-06. crossr-skills#123 rebase-merged as 3f236dc..e3434f1. pr5a/pr5b/pr5c rows; phase stays in_progress with pending pr5d. Prompt-set 5a/5b/5c Landed. Distinct from pr5f, which closes the whole PR 5 stack."
     },
     {
       "id": "gan-close-4b",
@@ -74,7 +74,7 @@
       "repos": ["crossr-skills", "crossr-loops", "crossr-harness"],
       "source": "features.json phase status in_progress, every child commit completed",
       "blocked_by": [],
-      "notes": "Done 2026-09-06. Loops: crossr-loops#10 rebase-merged as 2764138..5f31cd8. Harness: crossr-harness#9 rebase-merged as 310f0ff..c974c8b. Skills 0–4b children were already completed; the phase stays in_progress because PR 5 continues (pr5-record #5 / skills#123)."
+      "notes": "Done 2026-09-06. Loops: crossr-loops#10 rebase-merged as 2764138..5f31cd8. Harness: crossr-harness#9 rebase-merged as 310f0ff..c974c8b. Skills 0–4b children were already completed; the phase stays in_progress because PR 5 continues (pr5-record landed as skills#123)."
     },
     {
       "id": "landing-rtl",
@@ -151,7 +151,7 @@
       "repos": ["crossr-skills"],
       "source": "crossr-skills/docs/plans/pr5-one-law-prompt-set.md 5f",
       "blocked_by": ["pr5d", "pr5e"],
-      "notes": "Closes the PR 5 stack. Distinct from pr5-record (#5), which is the overdue 5a/5b tracker note. pr5d and pr5e are on main; this is startable."
+      "notes": "Closes the PR 5 stack. Distinct from pr5-record (#5), now done as skills#123. pr5d and pr5e are on main; this is startable."
     },
     {
       "id": "pr6",
