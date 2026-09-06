@@ -17,14 +17,21 @@ Roster read 2026-09-03 from origin after fetch:
 Issues #2–#19 are the Project cards. Project
 https://github.com/orgs/sycamore-hq/projects/2.
 
-In progress (started 2026-09-03): `work-00` #15.
+In progress: `work-00` #15 (started 2026-09-03); `pr6` #11 (review 2026-09-06).
+
+`pr6` #11 in review 2026-09-06.
+[crossr-skills#125](https://github.com/sycamore-hq/crossr-skills/pull/125)
+plan-writer + audit-plan.
+[crossr-loops#11](https://github.com/sycamore-hq/crossr-loops/pull/11)
+plan-first AXEL.
+[crossr-harness#10](https://github.com/sycamore-hq/crossr-harness/pull/10)
+HARNESS-SPEC gates. Not done. Do not close #11.
 
 `pr5f` #19 done 2026-09-06.
 [crossr-skills#124](https://github.com/sycamore-hq/crossr-skills/pull/124)
 merged as `6c5476e` (rebase refused: the branch already merged main).
 Four pin loci read `v1-one-law-consumers`. `regen-agents` twice clean.
 Dying-name grep zero. Plan twins close PR 5 with both tags.
-`pr6` #11 is startable.
 
 `pr5-record` #5 done 2026-09-06.
 [crossr-skills#123](https://github.com/sycamore-hq/crossr-skills/pull/123)
@@ -113,7 +120,7 @@ A status flip edits the record, not the suite.
 
 Roadmap view is a view of this ledger (`just project-roadmap`): Status, Lane,
 sequence dates, and GitHub issue `blocked_by` edges. Dates are topology, not
-deadlines. Next after the in-flight items: `pr6` #11.
+deadlines. Next after the in-flight items: `pr7` #12 (waits on `pr6`).
 
 Plan audit 2026-09-03 against skills `origin/main` `0bd2c40`:
 
@@ -123,10 +130,10 @@ Plan audit 2026-09-03 against skills `origin/main` `0bd2c40`:
 - GAN PR 0–4: landed. Close-out `gan-close-4b` is done on loops and harness.
 - PR 5 is the 7-PR prompt-set stack. Closed. `pr5-record` landed as
   skills#123. `pr5f` landed as skills#124 (`6c5476e`).
-- PR 6 is startable. PR 7 waits on PR 6.
+- PR 6 is in review (skills#125, loops#11, harness#10). PR 7 waits on PR 6.
 - GAN §5 "also worth doing" is not a named unit. Not on the board.
 
 ## Verification Status
 
 - `python3 -m unittest discover -s test -v` — 62 tests OK
-- `python3 scripts/work-board --markdown` — startable 1 (`pr6`), in progress 1 (`work-00`)
+- `python3 scripts/work-board --markdown` — startable 0, in progress 2 (`pr6`, `work-00`)
