@@ -1,6 +1,6 @@
 {
   "updated": "2026-09-06",
-  "source_as_of": "berea#9 rebase-merged as f62e1d6..f03473e, 2026-09-06 05:48 UTC",
+  "source_as_of": "crossr-harness#9 rebase-merged as 310f0ff..c974c8b, 2026-09-06 06:18 UTC",
   "github_project": {
     "owner": "sycamore-hq",
     "title": "sycamore-hq work",
@@ -69,12 +69,12 @@
       "id": "gan-close-4b",
       "issue": 6,
       "title": "Close gan-layer-separation PRs 0–4b on the three remotes",
-      "status": "todo",
+      "status": "done",
       "kind": "hygiene",
       "repos": ["crossr-skills", "crossr-loops", "crossr-harness"],
       "source": "features.json phase status in_progress, every child commit completed",
       "blocked_by": [],
-      "notes": "Why the per-repo dashboard prints 100% done and 0 in progress. Phase left open after 4b."
+      "notes": "Done 2026-09-06. Loops: crossr-loops#10 rebase-merged as 2764138..5f31cd8. Harness: crossr-harness#9 rebase-merged as 310f0ff..c974c8b. Skills 0–4b children were already completed; the phase stays in_progress because PR 5 continues (pr5-record #5 / skills#123)."
     },
     {
       "id": "landing-rtl",
@@ -102,23 +102,23 @@
       "id": "loops-lockfile",
       "issue": 9,
       "title": "loops lockfile says loops=v0 while the repo tagged v1-cards",
-      "status": "in_progress",
+      "status": "done",
       "kind": "hygiene",
       "repos": ["crossr-loops"],
       "source": "crossr-loops/lockfile.toml vs git tag v1-cards",
       "blocked_by": [],
-      "notes": "Harness and skills already pin loops=v1-cards. Confirm whether the loops lockfile is a consumer pin or a self-advertisement."
+      "notes": "Done 2026-09-06. Consumer pin, not a self-advertisement. crossr-loops#8 rebase-merged as d9679e1..f4b5ba3: lockfile.toml loops=v1-cards. README current pins match. graphs-verify and verify-protocol green on cea6e59."
     },
     {
       "id": "dashboard-phase",
       "issue": 10,
       "title": "status-dashboard totals ignore phase-level in_progress",
-      "status": "in_progress",
+      "status": "done",
       "kind": "hygiene",
       "repos": ["crossr-harness"],
       "source": "crossr-harness/scripts/status-dashboard totals() counts commits only",
       "blocked_by": [],
-      "notes": "dashboard-prompt job. Do not paper over it by editing features.json alone."
+      "notes": "Done 2026-09-04. crossr-harness#7 rebase-merged as 66bb380..9b2ee5a. feature_units() counts a leftover in_progress phase. Do not paper over it by editing features.json alone."
     },
     {
       "id": "pr5d",
