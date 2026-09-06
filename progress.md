@@ -25,7 +25,14 @@ In progress (started 2026-09-03): `loops-lockfile` #9,
 rebase-merged as `6f8e4e6`..`cea6e59`. Tests, `graphs-verify`,
 `verify-protocol`, and `verify-skill-refs` (skills `v1-one-law` at
 `507c509`) green on `cea6e59`. Tag `v1-one-law-consumers` (`69a05d2`)
-peels to `cea6e59` on the loops remote. `pr5f` #19 waits on `pr5e` alone.
+peels to `cea6e59` on the loops remote.
+
+`pr5e` #18 done 2026-09-06:
+[crossr-harness#8](https://github.com/sycamore-hq/crossr-harness/pull/8)
+rebase-merged as `274e315`..`0159561`. Pins `v1-one-law` /
+`v1-one-law-consumers`. `books` is a disclosure filter; no-book remotes
+load `code-writer` / the gate card alone. Smoke PASS on `0159561`.
+`pr5f` #19 is startable.
 
 `berea-003` #4 done 2026-09-05: [berea#8](https://github.com/sycamore-hq/berea/pull/8)
 rebase-merged as `ec82658`..`bb4457e`. T020–T090 checked. INDEX:
@@ -34,7 +41,7 @@ rebase-merged as `ec82658`..`bb4457e`. T020–T090 checked. INDEX:
 `pr5c` #2 done 2026-09-03: crossr-skills#120 rebase-merged as
 `4b8601e`..`507c509`; acceptance greps zero and `harness-validate` green on
 `507c509`; tag `v1-one-law` (`88d9ee2`) peels to `507c509` on the skills
-remote. `pr5e` #18 is still startable.
+remote.
 
 `landing-rtl` #7 done 2026-09-06:
 [crossr-web-landing#10](https://github.com/sycamore-hq/crossr-web-landing/pull/10)
@@ -71,7 +78,7 @@ open item), not named ids. A status flip edits the record, not the suite.
 Roadmap view is a view of this ledger (`just project-roadmap`): Status, Lane,
 sequence dates, and GitHub issue `blocked_by` edges. Dates are topology, not
 deadlines. Next after the in-flight items: `pr5-record` #5,
-`gan-close-4b` #6, `pr5e` #18.
+`gan-close-4b` #6, `pr5f` #19.
 
 Plan audit 2026-09-03 against skills `origin/main` `0bd2c40`:
 
@@ -79,9 +86,8 @@ Plan audit 2026-09-03 against skills `origin/main` `0bd2c40`:
   stays parked. Custom domain is a decision, not a card.
 - Mitchell contract: landed (`mitchell-decomposition` completed). Not a card.
 - GAN PR 0–4: landed. Close-out is `gan-close-4b`.
-- PR 5 is the 7-PR prompt-set stack. 5a/5b/5c/5g on main (`landing-rtl`
-  #7, `landing-pins` #8). Board still names `pr5e` #18 and `pr5f` #19.
-  `pr5-record` is the overdue 5a/5b tracker note.
+- PR 5 is the 7-PR prompt-set stack. 5a/5b/5c/5d/5e/5g on main. Board
+  still names `pr5f` #19. `pr5-record` is the overdue 5a/5b tracker note.
 - PR 6 waits on `pr5f`. PR 7 waits on PR 6.
 - GAN §5 "also worth doing" is not a named unit. Not on the board.
 

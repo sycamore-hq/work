@@ -1,6 +1,6 @@
 {
   "updated": "2026-09-06",
-  "source_as_of": "landing-rtl #10 and landing-pins #11 rebase-merged on crossr-web-landing, 2026-09-06",
+  "source_as_of": "crossr-harness#8 rebase-merged as 274e315..0159561, 2026-09-06 05:16 UTC",
   "github_project": {
     "owner": "sycamore-hq",
     "title": "sycamore-hq work",
@@ -135,12 +135,12 @@
       "id": "pr5e",
       "issue": 18,
       "title": "PR 5e: HARNESS-SPEC §6 + lockfile books + smoke",
-      "status": "todo",
+      "status": "done",
       "kind": "planned",
       "repos": ["crossr-harness"],
       "source": "crossr-skills/docs/plans/pr5-one-law-prompt-set.md 5e",
       "blocked_by": ["pr5c"],
-      "notes": "HARNESS-SPEC.md, AGENTS.md, and the harness AGENTS template still name dead skills. Pins stay v1-gan-layers / v1-cards until 5f."
+      "notes": "Done 2026-09-06. crossr-harness#8 rebase-merged as 274e315..0159561. Pins v1-one-law / v1-one-law-consumers. books is a disclosure filter; no-book remotes load code-writer / the gate card alone. Smoke PASS on 0159561. pr5f is startable."
     },
     {
       "id": "pr5f",
@@ -151,7 +151,7 @@
       "repos": ["crossr-skills"],
       "source": "crossr-skills/docs/plans/pr5-one-law-prompt-set.md 5f",
       "blocked_by": ["pr5d", "pr5e"],
-      "notes": "Closes the PR 5 stack. Distinct from pr5-record (#5), which is the overdue 5a/5b tracker note."
+      "notes": "Closes the PR 5 stack. Distinct from pr5-record (#5), which is the overdue 5a/5b tracker note. pr5d and pr5e are on main; this is startable."
     },
     {
       "id": "pr6",
