@@ -8,7 +8,6 @@ names a ledger item, so a status flip edits the record, not this file.
 import importlib.machinery
 import importlib.util
 import json
-import re
 import unittest
 from collections import Counter
 from pathlib import Path
@@ -284,11 +283,9 @@ class Render(unittest.TestCase):
     def test_committed_board_html_is_the_rendered_ledger(self):
         """just status-html is the view. A stale docs/board.html is a lie."""
         committed = (ROOT / "docs" / "board.html").read_text()
-        stamp = re.search(r'text-stone-500">([^<]+?) · ledger ', committed)
+        stamp = work_board.generated_stamp(committed)
         self.assertIsNotNone(stamp, "board.html has no generated stamp")
-        expected = work_board.render_html(
-            work_board.model(LEDGER, stamp.group(1).strip())
-        )
+        expected = work_board.render_html(work_board.model(LEDGER, stamp))
         self.assertEqual(committed, expected)
 
 

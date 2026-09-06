@@ -108,7 +108,8 @@ unit-tested; the `gh` half runs where org project write exists.
 
 Tests assert ledger invariants (startable ⇔ todo, unparked, blockers done;
 lanes partition the ledger; blocker graph acyclic; renderers name every
-open item), not named ids. A status flip edits the record, not the suite.
+open item; committed board.html is the rendered ledger), not named ids.
+A status flip edits the record, not the suite.
 
 Roadmap view is a view of this ledger (`just project-roadmap`): Status, Lane,
 sequence dates, and GitHub issue `blocked_by` edges. Dates are topology, not
@@ -127,5 +128,5 @@ Plan audit 2026-09-03 against skills `origin/main` `0bd2c40`:
 
 ## Verification Status
 
-- `python3 -m unittest discover -s test -v` — 60 tests OK
+- `python3 -m unittest discover -s test -v` — 61 tests OK
 - `python3 scripts/work-board --markdown` — startable 1 (`pr6`), in progress 1 (`work-00`)
