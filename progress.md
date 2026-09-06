@@ -19,6 +19,13 @@ https://github.com/orgs/sycamore-hq/projects/2.
 
 In progress (started 2026-09-03): `work-00` #15.
 
+`pr5f` #19 done 2026-09-06.
+[crossr-skills#124](https://github.com/sycamore-hq/crossr-skills/pull/124)
+merged as `6c5476e` (rebase refused: the branch already merged main).
+Four pin loci read `v1-one-law-consumers`. `regen-agents` twice clean.
+Dying-name grep zero. Plan twins close PR 5 with both tags.
+`pr6` #11 is startable.
+
 `pr5-record` #5 done 2026-09-06.
 [crossr-skills#123](https://github.com/sycamore-hq/crossr-skills/pull/123)
 rebase-merged as `3f236dc`..`e3434f1`. `pr5a`/`pr5b`/`pr5c` rows; phase
@@ -105,7 +112,7 @@ open item), not named ids. A status flip edits the record, not the suite.
 
 Roadmap view is a view of this ledger (`just project-roadmap`): Status, Lane,
 sequence dates, and GitHub issue `blocked_by` edges. Dates are topology, not
-deadlines. Next after the in-flight items: `pr5f` #19.
+deadlines. Next after the in-flight items: `pr6` #11.
 
 Plan audit 2026-09-03 against skills `origin/main` `0bd2c40`:
 
@@ -113,12 +120,12 @@ Plan audit 2026-09-03 against skills `origin/main` `0bd2c40`:
   stays parked. Custom domain is a decision, not a card.
 - Mitchell contract: landed (`mitchell-decomposition` completed). Not a card.
 - GAN PR 0–4: landed. Close-out `gan-close-4b` is done on loops and harness.
-- PR 5 is the 7-PR prompt-set stack. 5a/5b/5c/5d/5e/5g on main. Board
-  still names `pr5f` #19. `pr5-record` landed as skills#123.
-- PR 6 waits on `pr5f`. PR 7 waits on PR 6.
+- PR 5 is the 7-PR prompt-set stack. Closed. `pr5-record` landed as
+  skills#123. `pr5f` landed as skills#124 (`6c5476e`).
+- PR 6 is startable. PR 7 waits on PR 6.
 - GAN §5 "also worth doing" is not a named unit. Not on the board.
 
 ## Verification Status
 
 - `python3 -m unittest discover -s test -v` — 60 tests OK
-- `python3 scripts/work-board --markdown` — startable 1 (`pr5f`), in progress 1 (`work-00`)
+- `python3 scripts/work-board --markdown` — startable 1 (`pr6`), in progress 1 (`work-00`)
