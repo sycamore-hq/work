@@ -18,7 +18,12 @@ Issues #2–#19 are the Project cards. Project
 https://github.com/orgs/sycamore-hq/projects/2.
 
 In progress (started 2026-09-03): `loops-lockfile` #9,
-`dashboard-phase` #10, `berea-002` #13, plus `work-00` #15.
+`dashboard-phase` #10, plus `work-00` #15.
+
+`berea-002` #13 done 2026-09-06: [berea#9](https://github.com/sycamore-hq/berea/pull/9)
+rebase-merged as `f62e1d6`..`f03473e`. Reviewed is deny-closed. INDEX:
+`002-memory-notes | done | later | 0/4`. `bun run check` + CI green on
+`f03473e`.
 
 `pr5d` #17 done 2026-09-05:
 [crossr-loops#9](https://github.com/sycamore-hq/crossr-loops/pull/9)
