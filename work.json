@@ -1,6 +1,6 @@
 {
   "updated": "2026-09-06",
-  "source_as_of": "crossr-harness#8 rebase-merged as 274e315..0159561, 2026-09-06 05:16 UTC",
+  "source_as_of": "crossr-loops#10 rebase-merged as 2764138..5f31cd8, 2026-09-06 05:42 UTC",
   "github_project": {
     "owner": "sycamore-hq",
     "title": "sycamore-hq work",
@@ -69,12 +69,12 @@
       "id": "gan-close-4b",
       "issue": 6,
       "title": "Close gan-layer-separation PRs 0–4b on the three remotes",
-      "status": "todo",
+      "status": "in_progress",
       "kind": "hygiene",
       "repos": ["crossr-skills", "crossr-loops", "crossr-harness"],
       "source": "features.json phase status in_progress, every child commit completed",
       "blocked_by": [],
-      "notes": "Why the per-repo dashboard prints 100% done and 0 in progress. Phase left open after 4b."
+      "notes": "Loops remote closed 2026-09-06. crossr-loops#10 rebase-merged as 2764138..5f31cd8; gan-layer-separation is completed there. harness#9 still open. skills#123 keeps the phase open (PR 5 continues on that tracker)."
     },
     {
       "id": "landing-rtl",
