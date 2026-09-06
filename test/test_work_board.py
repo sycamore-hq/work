@@ -8,6 +8,7 @@ names a ledger item, so a status flip edits the record, not this file.
 import importlib.machinery
 import importlib.util
 import json
+import re
 import unittest
 from collections import Counter
 from pathlib import Path
@@ -279,6 +280,23 @@ class Render(unittest.TestCase):
 
     def test_ledger_is_valid_json(self):
         json.loads((ROOT / "work.json").read_text())
+
+    def test_committed_board_html_open_cards_match_ledger(self):
+        """just status-html is the view. A stale docs/board.html is a lie.
+
+        Every open id must appear as a card, and a now-done id must not.
+        Startable-count-only checks miss an in_progress → done flip.
+        """
+        committed = (ROOT / "docs" / "board.html").read_text()
+        self.assertNotIn("{{", committed)
+        cards = set(
+            re.findall(
+                r'<span class="font-mono text-xs text-stone-500">([^<]+)</span>',
+                committed,
+            )
+        )
+        open_ids = ids([i for i in ITEMS if i["status"] != work_board.DONE])
+        self.assertEqual(cards, open_ids)
 
 
 if __name__ == "__main__":

@@ -17,8 +17,17 @@ Roster read 2026-09-03 from origin after fetch:
 Issues #2–#19 are the Project cards. Project
 https://github.com/orgs/sycamore-hq/projects/2.
 
-In progress (started 2026-09-03): `loops-lockfile` #9,
-`dashboard-phase` #10, `berea-002` #13, plus `work-00` #15.
+In progress (started 2026-09-03): `dashboard-phase` #10,
+`berea-002` #13, plus `work-00` #15.
+
+`loops-lockfile` #9 done 2026-09-06. The loops work landed 2026-09-03:
+[crossr-loops#8](https://github.com/sycamore-hq/crossr-loops/pull/8)
+rebase-merged as `d9679e1`..`f4b5ba3`. Consumer pin, same contract as
+harness and skills. `lockfile.toml` is `loops = "v1-cards"`. README
+current pins match. `graphs-verify` and `verify-protocol` green on
+`cea6e59`. Tag `v1-cards` (`a9fad66`) peels to `d9679e1`. The merge
+closed #9; `project-roadmap` reopened it because this ledger still
+said in_progress.
 
 `pr5d` #17 done 2026-09-05:
 [crossr-loops#9](https://github.com/sycamore-hq/crossr-loops/pull/9)

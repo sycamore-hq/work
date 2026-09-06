@@ -1,6 +1,6 @@
 {
   "updated": "2026-09-06",
-  "source_as_of": "crossr-harness#8 rebase-merged as 274e315..0159561, 2026-09-06 05:16 UTC",
+  "source_as_of": "loops#8 rebase-merged as d9679e1..f4b5ba3; lockfile loops=v1-cards verified 2026-09-06",
   "github_project": {
     "owner": "sycamore-hq",
     "title": "sycamore-hq work",
@@ -102,12 +102,12 @@
       "id": "loops-lockfile",
       "issue": 9,
       "title": "loops lockfile says loops=v0 while the repo tagged v1-cards",
-      "status": "in_progress",
+      "status": "done",
       "kind": "hygiene",
       "repos": ["crossr-loops"],
       "source": "crossr-loops/lockfile.toml vs git tag v1-cards",
       "blocked_by": [],
-      "notes": "Harness and skills already pin loops=v1-cards. Confirm whether the loops lockfile is a consumer pin or a self-advertisement."
+      "notes": "Done 2026-09-06. Consumer pin, not a self-advertisement. crossr-loops#8 rebase-merged as d9679e1..f4b5ba3 on 2026-09-03: lockfile.toml loops=v1-cards. README current pins match. graphs-verify and verify-protocol green on cea6e59. Tag v1-cards (a9fad66) peels to d9679e1. The merge closed #9; project-roadmap reopened it because this ledger still said in_progress."
     },
     {
       "id": "dashboard-phase",
