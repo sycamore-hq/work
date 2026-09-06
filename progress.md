@@ -75,10 +75,17 @@ Tests assert ledger invariants (startable ⇔ todo, unparked, blockers done;
 lanes partition the ledger; blocker graph acyclic; renderers name every
 open item), not named ids. A status flip edits the record, not the suite.
 
+`pr5-record` #5 done 2026-09-06. Skills tracker has `pr5a` / `pr5b`.
+Plan header and prompt-set status name 5a (#117) and 5b (#118) landed.
+`pr5f` #19 still closes the PR 5 stack.
+
+`gan-close-4b` #6 done 2026-09-06. `gan-layer-separation` is `completed`
+on skills, loops, and harness. The recorded children were already done;
+the phase was the thing left open.
+
 Roadmap view is a view of this ledger (`just project-roadmap`): Status, Lane,
 sequence dates, and GitHub issue `blocked_by` edges. Dates are topology, not
-deadlines. Next after the in-flight items: `pr5-record` #5,
-`gan-close-4b` #6, `pr5f` #19.
+deadlines. Next after the in-flight items: `pr5f` #19.
 
 Plan audit 2026-09-03 against skills `origin/main` `0bd2c40`:
 

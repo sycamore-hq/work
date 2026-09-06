@@ -1,6 +1,6 @@
 {
   "updated": "2026-09-06",
-  "source_as_of": "crossr-harness#8 rebase-merged as 274e315..0159561, 2026-09-06 05:16 UTC",
+  "source_as_of": "pr5-record + gan-close-4b on skills/loops/harness, 2026-09-06",
   "github_project": {
     "owner": "sycamore-hq",
     "title": "sycamore-hq work",
@@ -58,23 +58,23 @@
       "id": "pr5-record",
       "issue": 5,
       "title": "Record 5a/5b on the skills tracker and plan header",
-      "status": "todo",
+      "status": "done",
       "kind": "hygiene",
       "repos": ["crossr-skills"],
       "source": "features.json + progress.md + gan-layer-separation-plan.md status + pr5-one-law-prompt-set.md vs origin/main 0bd2c40",
       "blocked_by": [],
-      "notes": "Books are on main (5a #117, 5b #118). Tracker and gan-layer-separation-plan still stop at PR 4. Prompt set still says 5b in flight. Distinct from pr5f, which closes the whole PR 5 stack."
+      "notes": "Done 2026-09-06. pr5a/pr5b rows on gan-layer-separation. Plan header and prompt-set status name 5a #117 and 5b #118 landed. Distinct from pr5f, which still closes the PR 5 stack."
     },
     {
       "id": "gan-close-4b",
       "issue": 6,
       "title": "Close gan-layer-separation PRs 0–4b on the three remotes",
-      "status": "todo",
+      "status": "done",
       "kind": "hygiene",
       "repos": ["crossr-skills", "crossr-loops", "crossr-harness"],
       "source": "features.json phase status in_progress, every child commit completed",
       "blocked_by": [],
-      "notes": "Why the per-repo dashboard prints 100% done and 0 in progress. Phase left open after 4b."
+      "notes": "Done 2026-09-06. gan-layer-separation status is completed on skills (with 5a/5b rows), loops, and harness. Every recorded child was already completed."
     },
     {
       "id": "landing-rtl",

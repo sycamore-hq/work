@@ -280,6 +280,19 @@ class Render(unittest.TestCase):
     def test_ledger_is_valid_json(self):
         json.loads((ROOT / "work.json").read_text())
 
+    def test_committed_board_html_names_every_open_item(self):
+        """just status-html is the view. A stale docs/board.html is a lie."""
+        committed = (ROOT / "docs" / "board.html").read_text()
+        self.assertNotIn("{{", committed)
+        for item in ITEMS:
+            if item["status"] == work_board.DONE:
+                continue
+            self.assertIn(item["id"], committed, item["id"])
+        self.assertIn(
+            f">{len(MODEL['startable'])}</div>",
+            committed,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
