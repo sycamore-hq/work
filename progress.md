@@ -128,5 +128,5 @@ Plan audit 2026-09-03 against skills `origin/main` `0bd2c40`:
 
 ## Verification Status
 
-- `python3 -m unittest discover -s test -v` — 61 tests OK
+- `python3 -m unittest discover -s test -v` — 62 tests OK
 - `python3 scripts/work-board --markdown` — startable 1 (`pr6`), in progress 1 (`work-00`)

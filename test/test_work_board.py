@@ -288,6 +288,12 @@ class Render(unittest.TestCase):
         expected = work_board.render_html(work_board.model(LEDGER, stamp))
         self.assertEqual(committed, expected)
 
+    def test_generated_stamp_round_trips_through_render_html(self):
+        """GENERATED_STAMP must recognise the <p> render_html emits."""
+        page = work_board.render_html(work_board.model(LEDGER, "2026-01-01 00:00 UTC"))
+        self.assertEqual(work_board.generated_stamp(page), "2026-01-01 00:00 UTC")
+        self.assertIsNone(work_board.generated_stamp(""))
+
 
 if __name__ == "__main__":
     unittest.main()
