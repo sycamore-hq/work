@@ -1,6 +1,6 @@
 {
   "updated": "2026-09-06",
-  "source_as_of": "crossr-skills#124 merged as 6c5476e, 2026-09-06 06:41 UTC",
+  "source_as_of": "pr6 in review: skills#125, loops#11, harness#10, 2026-09-06",
   "github_project": {
     "owner": "sycamore-hq",
     "title": "sycamore-hq work",
@@ -157,12 +157,12 @@
       "id": "pr6",
       "issue": 11,
       "title": "PR 6: plan-writer + plan-first GAN",
-      "status": "todo",
+      "status": "in_progress",
       "kind": "planned",
       "repos": ["crossr-loops", "crossr-skills", "crossr-harness"],
       "source": "crossr-skills/docs/plans/gan-layer-separation-plan.md §4 PR 6",
       "blocked_by": ["pr5f"],
-      "notes": "plan-writer is a skill, not a persona (decision #11). Architect moves to plan time. pr5f landed; this is startable."
+      "notes": "In review: skills#125, loops#11, harness#10. plan-writer is a skill, not a persona (decision #11). Architect moves to plan time. pr5f landed."
     },
     {
       "id": "pr7",
