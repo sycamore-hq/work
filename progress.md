@@ -19,6 +19,7 @@ https://github.com/orgs/sycamore-hq/projects/2.
 
 In progress (started 2026-09-03): `loops-lockfile` #9,
 `dashboard-phase` #10, `berea-002` #13, plus `work-00` #15.
+`pr5e` #18 started 2026-09-06.
 
 `pr5d` #17 done 2026-09-05:
 [crossr-loops#9](https://github.com/sycamore-hq/crossr-loops/pull/9)
@@ -34,7 +35,14 @@ rebase-merged as `ec82658`..`bb4457e`. T020–T090 checked. INDEX:
 `pr5c` #2 done 2026-09-03: crossr-skills#120 rebase-merged as
 `4b8601e`..`507c509`; acceptance greps zero and `harness-validate` green on
 `507c509`; tag `v1-one-law` (`88d9ee2`) peels to `507c509` on the skills
-remote. `pr5e` #18 and `landing-rtl` #7 are still startable.
+remote. `landing-rtl` #7 is still startable.
+
+`pr5e` #18 in flight 2026-09-06:
+[crossr-harness#8](https://github.com/sycamore-hq/crossr-harness/pull/8)
+on `1e355d6`. Pins `v1-one-law` / `v1-one-law-consumers`. `books`
+disclosure + §6 retarget. Smoke PASS (conductor 7,121; empty-books
+fails; absorbed writers absent). Waiting on merge. `pr5f` #19 still
+waits on this.
 
 `landing-pages` #3 done 2026-09-05. The host was already Actions-backed.
 The two web-05 deploys on `39084fd` 404'd because Pages was not ready.

@@ -1,6 +1,6 @@
 {
-  "updated": "2026-09-05",
-  "source_as_of": "loops tag v1-one-law-consumers (69a05d2) peels to cea6e59, 2026-09-05 23:54 UTC",
+  "updated": "2026-09-06",
+  "source_as_of": "crossr-harness#8 open on 1e355d6, smoke PASS, 2026-09-06",
   "github_project": {
     "owner": "sycamore-hq",
     "title": "sycamore-hq work",
@@ -135,12 +135,12 @@
       "id": "pr5e",
       "issue": 18,
       "title": "PR 5e: HARNESS-SPEC §6 + lockfile books + smoke",
-      "status": "todo",
+      "status": "in_progress",
       "kind": "planned",
       "repos": ["crossr-harness"],
       "source": "crossr-skills/docs/plans/pr5-one-law-prompt-set.md 5e",
       "blocked_by": ["pr5c"],
-      "notes": "HARNESS-SPEC.md, AGENTS.md, and the harness AGENTS template still name dead skills. Pins stay v1-gan-layers / v1-cards until 5f."
+      "notes": "In flight 2026-09-06. crossr-harness#8. Pins v1-one-law / v1-one-law-consumers. books disclosure + §6 retarget. Smoke PASS on 1e355d6 (conductor 7,121; empty-books fails; absorbed writers absent). Waiting on merge."
     },
     {
       "id": "pr5f",
