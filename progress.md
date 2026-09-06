@@ -18,7 +18,7 @@ Issues #2–#19 are the Project cards. Project
 https://github.com/orgs/sycamore-hq/projects/2.
 
 In progress (started 2026-09-03): `loops-lockfile` #9,
-`dashboard-phase` #10, `berea-002` #13, plus `work-00` #15.
+`dashboard-phase` #10, `berea-002` #13, `pr5f` #19, plus `work-00` #15.
 
 `pr5d` #17 done 2026-09-05:
 [crossr-loops#9](https://github.com/sycamore-hq/crossr-loops/pull/9)
@@ -32,7 +32,11 @@ peels to `cea6e59` on the loops remote.
 rebase-merged as `274e315`..`0159561`. Pins `v1-one-law` /
 `v1-one-law-consumers`. `books` is a disclosure filter; no-book remotes
 load `code-writer` / the gate card alone. Smoke PASS on `0159561`.
-`pr5f` #19 is startable.
+`pr5f` #19 is in flight:
+[crossr-skills#124](https://github.com/sycamore-hq/crossr-skills/pull/124).
+Four pin loci read `v1-one-law-consumers`. `regen-agents` twice clean.
+`.opencode/` dying-name grep zero. Plan twins close PR 5. `test/test_pr5f.py`
+16/16. `pr6` still waits on the merge.
 
 `berea-003` #4 done 2026-09-05: [berea#8](https://github.com/sycamore-hq/berea/pull/8)
 rebase-merged as `ec82658`..`bb4457e`. T020–T090 checked. INDEX:
@@ -78,7 +82,7 @@ open item), not named ids. A status flip edits the record, not the suite.
 Roadmap view is a view of this ledger (`just project-roadmap`): Status, Lane,
 sequence dates, and GitHub issue `blocked_by` edges. Dates are topology, not
 deadlines. Next after the in-flight items: `pr5-record` #5,
-`gan-close-4b` #6, `pr5f` #19.
+`gan-close-4b` #6.
 
 Plan audit 2026-09-03 against skills `origin/main` `0bd2c40`:
 
@@ -86,8 +90,8 @@ Plan audit 2026-09-03 against skills `origin/main` `0bd2c40`:
   stays parked. Custom domain is a decision, not a card.
 - Mitchell contract: landed (`mitchell-decomposition` completed). Not a card.
 - GAN PR 0–4: landed. Close-out is `gan-close-4b`.
-- PR 5 is the 7-PR prompt-set stack. 5a/5b/5c/5d/5e/5g on main. Board
-  still names `pr5f` #19. `pr5-record` is the overdue 5a/5b tracker note.
+- PR 5 is the 7-PR prompt-set stack. 5a/5b/5c/5d/5e/5g on main. `pr5f`
+  #19 is in flight (skills#124). `pr5-record` is the overdue 5a/5b tracker note.
 - PR 6 waits on `pr5f`. PR 7 waits on PR 6.
 - GAN §5 "also worth doing" is not a named unit. Not on the board.
 

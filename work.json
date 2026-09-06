@@ -1,6 +1,6 @@
 {
   "updated": "2026-09-06",
-  "source_as_of": "crossr-harness#8 rebase-merged as 274e315..0159561, 2026-09-06 05:16 UTC",
+  "source_as_of": "crossr-skills#124 open (pr5f pin bump + regen-agents + PR 5 record), 2026-09-06 05:30 UTC",
   "github_project": {
     "owner": "sycamore-hq",
     "title": "sycamore-hq work",
@@ -146,12 +146,12 @@
       "id": "pr5f",
       "issue": 19,
       "title": "PR 5f: loops pin bump + regen-agents + close PR 5 record",
-      "status": "todo",
+      "status": "in_progress",
       "kind": "planned",
       "repos": ["crossr-skills"],
       "source": "crossr-skills/docs/plans/pr5-one-law-prompt-set.md 5f",
       "blocked_by": ["pr5d", "pr5e"],
-      "notes": "Closes the PR 5 stack. Distinct from pr5-record (#5), which is the overdue 5a/5b tracker note. pr5d and pr5e are on main; this is startable."
+      "notes": "In flight 2026-09-06. crossr-skills#124: loops pin v1-one-law-consumers at all four loci; regen-agents twice clean; .opencode/ dying-name grep zero; plan twins close PR 5 with both tags; test/test_pr5f.py 16/16. Distinct from pr5-record (#5). pr6 still waits on merge."
     },
     {
       "id": "pr6",
