@@ -195,7 +195,7 @@
       "repos": ["crossr-loops"],
       "source": "crossr-skills/docs/plans/graph-runner-prompt-set.md (work#14); parked at split-09 as 'Not this chain'",
       "blocked_by": [],
-      "notes": "Prompt set prepared 2026-09-09. R1-R3 in crossr-loops (Rust stepper/replayer over graphs/*.json; cover gate on every edge), R4 closes this ledger. No Rhai. No executor. No tag. No pin move. Unresolved 1: serde approval."
+      "notes": "Prompt set prepared 2026-09-09. R1-R3 in crossr-loops (Rust stepper/replayer over graphs/*.json; cover gate on every edge), R4 closes this ledger. Answers folded 2026-09-09: R0 adds an explicit start key; serde approved; toolchain pinned 1.94.1; verify-graphs runs cover through cargo. No Rhai. No executor. No tag. No pin move."
     },
     {
       "id": "work-00",
