@@ -19,6 +19,23 @@ https://github.com/orgs/sycamore-hq/projects/2.
 
 In progress (started 2026-09-03): `work-00` #15.
 
+`pr7` #12 done 2026-09-09.
+[crossr-skills#126](https://github.com/sycamore-hq/crossr-skills/pull/126)
+(7a) rebase-merged as `ed45131`..`7536be9`; tag `v1-packets` peels to
+`7536be9`.
+[crossr-loops#12](https://github.com/sycamore-hq/crossr-loops/pull/12)
+(7b) rebase-merged as `9f4a239`..`9e5b3f1`; tag `v1-packets-consumers`
+peels to `9e5b3f1`.
+[crossr-harness#11](https://github.com/sycamore-hq/crossr-harness/pull/11)
+(7c) rebase-merged as `338f83c`..`006508d`.
+[crossr-skills#127](https://github.com/sycamore-hq/crossr-skills/pull/127)
+(7d) rebase-merged as `d4c154d`..`8b67bda`.
+Packet grammar + `audit-packet` (7a), AVRIL set review with one verdict
+line per id (7b), harness pins + `packet-audit` in bootstrap (7c), catalog
+pin `loops = v1-packets-consumers` and phase close (7d). Harness took a PR
+the ledger did not list under `repos`. `gan-layer-separation` is
+`completed` on skills. No startable item remains.
+
 `pr6` #11 done 2026-09-06.
 [crossr-skills#125](https://github.com/sycamore-hq/crossr-skills/pull/125)
 rebase-merged as `306ea92`..`f4783ad`.
@@ -123,7 +140,8 @@ A status flip edits the record, not the suite.
 
 Roadmap view is a view of this ledger (`just project-roadmap`): Status, Lane,
 sequence dates, and GitHub issue `blocked_by` edges. Dates are topology, not
-deadlines. Next after the in-flight items: `pr7` #12.
+deadlines. Nothing is startable after `pr7` #12 landed; the next unit needs
+a ledger entry before it is on the board.
 
 Plan audit 2026-09-03 against skills `origin/main` `0bd2c40`:
 
@@ -133,10 +151,14 @@ Plan audit 2026-09-03 against skills `origin/main` `0bd2c40`:
 - GAN PR 0–4: landed. Close-out `gan-close-4b` is done on loops and harness.
 - PR 5 is the 7-PR prompt-set stack. Closed. `pr5-record` landed as
   skills#123. `pr5f` landed as skills#124 (`6c5476e`).
-- PR 6 landed (skills#125, loops#11, harness#10). PR 7 is startable.
+- PR 6 landed (skills#125, loops#11, harness#10).
+- PR 7 landed (skills#126 / #127, loops#12, harness#11; tags `v1-packets` /
+  `v1-packets-consumers`). Phase `completed` on skills 2026-09-09.
 - GAN §5 "also worth doing" is not a named unit. Not on the board.
 
 ## Verification Status
 
 - `python3 -m unittest discover -s test -v` — 62 tests OK
-- `python3 scripts/work-board --markdown` — startable 1 (`pr7`), in progress 1 (`work-00`)
+- `python3 scripts/work-board --markdown` — startable 0, in progress 1 (`work-00`), done 16
+- `just project-roadmap` not run here (no `gh`); issue #12 labels/state still
+  need the refresh where org project write exists
