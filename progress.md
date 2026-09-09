@@ -19,6 +19,11 @@ https://github.com/orgs/sycamore-hq/projects/2.
 
 In progress (started 2026-09-03): `work-00` #15.
 
+`graph-runner` #14 unparked 2026-09-09. Prompt set at
+crossr-skills `docs/plans/graph-runner-prompt-set.md` (plan-audited; R1–R3
+loops, R4 closes this ledger). Status `todo`, kind `planned`, startable.
+`just project-roadmap` still owed so the issue labels follow the ledger.
+
 `pr7` #12 done 2026-09-09.
 [crossr-skills#126](https://github.com/sycamore-hq/crossr-skills/pull/126)
 rebase-merged as `ed45131`..`7536be9`.

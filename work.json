@@ -1,6 +1,6 @@
 {
   "updated": "2026-09-09",
-  "source_as_of": "pr7 landed: skills#126 / #127, loops#12, harness#11, 2026-09-09",
+  "source_as_of": "graph-runner prompt set prepared 2026-09-09; pr7 landed: skills#126 / #127, loops#12, harness#11, 2026-09-09",
   "github_project": {
     "owner": "sycamore-hq",
     "title": "sycamore-hq work",
@@ -190,12 +190,12 @@
       "id": "graph-runner",
       "issue": 14,
       "title": "Graph runner (loops backlog)",
-      "status": "parked",
-      "kind": "parked",
+      "status": "todo",
+      "kind": "planned",
       "repos": ["crossr-loops"],
-      "source": "crossr-skills progress.md after split-09; landing cut 'Not this chain'",
+      "source": "crossr-skills/docs/plans/graph-runner-prompt-set.md (work#14); parked at split-09 as 'Not this chain'",
       "blocked_by": [],
-      "notes": "Named as not-this-chain after the four-remote cut. No runner. No Rhai."
+      "notes": "Prompt set prepared 2026-09-09. R1-R3 in crossr-loops (Rust stepper/replayer over graphs/*.json; cover gate on every edge), R4 closes this ledger. No Rhai. No executor. No tag. No pin move. Unresolved 1: serde approval."
     },
     {
       "id": "work-00",
