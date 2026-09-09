@@ -19,6 +19,19 @@ https://github.com/orgs/sycamore-hq/projects/2.
 
 In progress (started 2026-09-03): `work-00` #15.
 
+`pr7` #12 done 2026-09-09.
+[crossr-skills#126](https://github.com/sycamore-hq/crossr-skills/pull/126)
+rebase-merged as `ed45131`..`7536be9`.
+[crossr-loops#12](https://github.com/sycamore-hq/crossr-loops/pull/12)
+rebase-merged as `9f4a239`..`9e5b3f1`.
+[crossr-harness#11](https://github.com/sycamore-hq/crossr-harness/pull/11)
+rebase-merged as `338f83c`..`006508d`.
+[crossr-skills#127](https://github.com/sycamore-hq/crossr-skills/pull/127)
+rebase-merged as `d4c154d`..`8b67bda`.
+Tags `v1-packets` / `v1-packets-consumers`. No tag cut on 7d.
+`gan-layer-separation` phase completed. Acceptance condition 1
+undemonstrated (no Elm/Melange run).
+
 `pr6` #11 done 2026-09-06.
 [crossr-skills#125](https://github.com/sycamore-hq/crossr-skills/pull/125)
 rebase-merged as `306ea92`..`f4783ad`.
@@ -123,7 +136,7 @@ A status flip edits the record, not the suite.
 
 Roadmap view is a view of this ledger (`just project-roadmap`): Status, Lane,
 sequence dates, and GitHub issue `blocked_by` edges. Dates are topology, not
-deadlines. Next after the in-flight items: `pr7` #12.
+deadlines. Nothing startable. `work-00` #15 stays in progress.
 
 Plan audit 2026-09-03 against skills `origin/main` `0bd2c40`:
 
@@ -133,10 +146,11 @@ Plan audit 2026-09-03 against skills `origin/main` `0bd2c40`:
 - GAN PR 0–4: landed. Close-out `gan-close-4b` is done on loops and harness.
 - PR 5 is the 7-PR prompt-set stack. Closed. `pr5-record` landed as
   skills#123. `pr5f` landed as skills#124 (`6c5476e`).
-- PR 6 landed (skills#125, loops#11, harness#10). PR 7 is startable.
+- PR 6 landed (skills#125, loops#11, harness#10).
+- PR 7 landed (skills#126 / #127, loops#12, harness#11). Phase closed.
 - GAN §5 "also worth doing" is not a named unit. Not on the board.
 
 ## Verification Status
 
 - `python3 -m unittest discover -s test -v` — 62 tests OK
-- `python3 scripts/work-board --markdown` — startable 1 (`pr7`), in progress 1 (`work-00`)
+- `python3 scripts/work-board --markdown` — startable 0, in progress 1 (`work-00`)
