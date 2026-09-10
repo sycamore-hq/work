@@ -1,6 +1,6 @@
 {
-  "updated": "2026-09-09",
-  "source_as_of": "graph-runner prompt set prepared 2026-09-09; pr7 landed: skills#126 / #127, loops#12, harness#11, 2026-09-09",
+  "updated": "2026-09-10",
+  "source_as_of": "graph-runner landed: loops#14 / #15 / #16, R3 merge aa48c2644316e6421bef797a8949acfa3169d3c7, 2026-09-10",
   "github_project": {
     "owner": "sycamore-hq",
     "title": "sycamore-hq work",
@@ -190,12 +190,12 @@
       "id": "graph-runner",
       "issue": 14,
       "title": "Graph runner (loops backlog)",
-      "status": "todo",
+      "status": "done",
       "kind": "planned",
       "repos": ["crossr-loops"],
       "source": "crossr-skills/docs/plans/graph-runner-prompt-set.md (work#14); parked at split-09 as 'Not this chain'",
       "blocked_by": [],
-      "notes": "Prompt set prepared 2026-09-09. R1-R3 in crossr-loops (Rust stepper/replayer over graphs/*.json; cover gate on every edge), R4 closes this ledger. Answers folded 2026-09-09: R0 adds an explicit start key; serde approved; toolchain pinned 1.94.1; verify-graphs runs cover through cargo. No Rhai. No executor. No tag. No pin move."
+      "notes": "Done 2026-09-10. crossr-loops#14 / #15 / #16 rebase-merged as cd0bb023a51f5bea0d17b0b178ea0be0660c1fed..aa48c2644316e6421bef797a8949acfa3169d3c7. graph-runner replays graphs; no Rhai, no executor, no tag, no pin move. cover: uncovered edges 0 on aa48c2644316e6421bef797a8949acfa3169d3c7."
     },
     {
       "id": "work-00",

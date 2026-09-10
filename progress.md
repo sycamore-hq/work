@@ -19,10 +19,17 @@ https://github.com/orgs/sycamore-hq/projects/2.
 
 In progress (started 2026-09-03): `work-00` #15.
 
-`graph-runner` #14 unparked 2026-09-09. Prompt set at
-crossr-skills `docs/plans/graph-runner-prompt-set.md` (plan-audited; R1–R3
-loops, R4 closes this ledger). Status `todo`, kind `planned`, startable.
-`just project-roadmap` still owed so the issue labels follow the ledger.
+`graph-runner` #14 done 2026-09-10.
+[crossr-loops#14](https://github.com/sycamore-hq/crossr-loops/pull/14)
+rebase-merged at `cd0bb02`.
+[crossr-loops#15](https://github.com/sycamore-hq/crossr-loops/pull/15)
+rebase-merged at `8a674a5`.
+[crossr-loops#16](https://github.com/sycamore-hq/crossr-loops/pull/16)
+rebase-merged at `aa48c26`; the three land as `cd0bb02`..`aa48c26`.
+graph-runner replays graphs. No Rhai, no executor, no tag, no pin move.
+`cover`: uncovered edges 0 on `aa48c26`. Prompt set at crossr-skills
+`docs/plans/graph-runner-prompt-set.md` (R1–R3 loops, R4 is this close).
+`just project-roadmap` still owed so issue #14 closes from the ledger.
 
 `pr7` #12 done 2026-09-09.
 [crossr-skills#126](https://github.com/sycamore-hq/crossr-skills/pull/126)
