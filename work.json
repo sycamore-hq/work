@@ -1,6 +1,6 @@
 {
   "updated": "2026-09-10",
-  "source_as_of": "graph-runner landed: loops#14 / #15 / #16, R3 merge aa48c2644316e6421bef797a8949acfa3169d3c7, 2026-09-10",
+  "source_as_of": "work-00 closed: org ledger standing, all roster items done, 2026-09-10",
   "github_project": {
     "owner": "sycamore-hq",
     "title": "sycamore-hq work",
@@ -201,12 +201,12 @@
       "id": "work-00",
       "issue": 15,
       "title": "Stand up this org ledger",
-      "status": "in_progress",
+      "status": "done",
       "kind": "outstanding",
       "repos": ["work"],
       "source": "this repository",
       "blocked_by": [],
-      "notes": "work.json is the record. The HTML is a view. GitHub Project: https://github.com/orgs/sycamore-hq/projects/2"
+      "notes": "Done 2026-09-10. Org ledger standing: work.json record, board HTML view, GitHub Project https://github.com/orgs/sycamore-hq/projects/2 (seeded; roadmap via just project-roadmap). All prior roster items done."
     },
     {
       "id": "gh-project",

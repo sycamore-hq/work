@@ -1,9 +1,15 @@
 # sycamore-hq/work — progress
 
-## board — work-00 (IN PROGRESS)
+## board — work-00 (COMPLETED)
 
 Stand up the org ledger. `work.json` is the record. The HTML and the GitHub
 Project are views.
+
+`work-00` #15 done 2026-09-10. Org ledger standing: `work.json` record,
+`docs/board.html` view, GitHub Project
+https://github.com/orgs/sycamore-hq/projects/2 (seeded; roadmap via
+`just project-roadmap`). All prior roster items done. `just project-roadmap`
+still owed so issue #15 closes and its labels follow the ledger.
 
 Roster read 2026-09-03 from origin after fetch:
 
@@ -17,7 +23,7 @@ Roster read 2026-09-03 from origin after fetch:
 Issues #2–#19 are the Project cards. Project
 https://github.com/orgs/sycamore-hq/projects/2.
 
-In progress (started 2026-09-03): `work-00` #15.
+Started 2026-09-03, closed 2026-09-10: `work-00` #15.
 
 `graph-runner` #14 done 2026-09-10.
 [crossr-loops#14](https://github.com/sycamore-hq/crossr-loops/pull/14)
@@ -148,7 +154,7 @@ A status flip edits the record, not the suite.
 
 Roadmap view is a view of this ledger (`just project-roadmap`): Status, Lane,
 sequence dates, and GitHub issue `blocked_by` edges. Dates are topology, not
-deadlines. Nothing startable. `work-00` #15 stays in progress.
+deadlines. Nothing startable. `work-00` #15 closed 2026-09-10.
 
 Plan audit 2026-09-03 against skills `origin/main` `0bd2c40`:
 
@@ -165,4 +171,4 @@ Plan audit 2026-09-03 against skills `origin/main` `0bd2c40`:
 ## Verification Status
 
 - `python3 -m unittest discover -s test -v` — 62 tests OK
-- `python3 scripts/work-board --markdown` — startable 0, in progress 1 (`work-00`)
+- `python3 scripts/work-board --markdown` — startable 0, in progress 0, done 18
